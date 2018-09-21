@@ -19,11 +19,11 @@
             layout="@layout/panel_home" />
 
         <include
-            android:id="@+id/id_list"
+            android:id="@+id/id_calender"
             layout="@layout/panel_calender" />
 
         <include
-            android:id="@+id/id_setting"
+            android:id="@+id/id_mine"
             layout="@layout/panel_mine" />
 
     </RelativeLayout>
