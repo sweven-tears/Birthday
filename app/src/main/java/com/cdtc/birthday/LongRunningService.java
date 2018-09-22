@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -39,7 +40,15 @@ public class LongRunningService extends Service {
         long triggerAtTime = SystemClock.elapsedRealtime() + fiveSeconds;
         Intent i = new Intent(this, LongRunningService.class);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+        try{
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+            }else{
+                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return START_STICKY;
     }
 

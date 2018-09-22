@@ -37,7 +37,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/more_bell" />
+            android:src="@mipmap/ic_bell" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/notication"/>
+            android:src="@mipmap/ic_notification"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/notication"/>
+            android:src="@mipmap/ic_notification"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/notication"/>
+            android:src="@mipmap/ic_notification"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/notication"/>
+            android:src="@mipmap/ic_notification"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/notication"/>
+            android:src="@mipmap/ic_notification"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -215,7 +215,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/notication"/>
+            android:src="@mipmap/ic_notification"/>
 
         <TextView
             android:layout_width="wrap_content"
