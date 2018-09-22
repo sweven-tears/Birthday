@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         //这三条信息是从数据库获取的
         int style=0;
-        String brothDate = "2005-9-9";
+        String brothDate = "2005-10-20";
         String name = "小强";
 //        String birthday="0000-00-00";
 //        String name="无记录";
