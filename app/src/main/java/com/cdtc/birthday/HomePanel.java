@@ -2,6 +2,7 @@ package com.cdtc.birthday;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.Gravity;
 import android.view.View;
@@ -201,10 +202,10 @@ class HomePanel implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.birth_layout) {
             //TODO 打开信息详情页面
-//            Intent intent=new Intent(context,EditActivity.class);
+            Intent intent=new Intent(context,AddBirthActivity.class);
 //            intent.putExtra("name",name);
 //            intent.putExtra("birthday",birthday);
-//            context.startActivity(intent);
+            context.startActivity(intent);
             Toast.makeText(context, "打开编辑页", Toast.LENGTH_SHORT).show();
         }
     }
