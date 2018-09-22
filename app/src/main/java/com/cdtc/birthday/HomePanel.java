@@ -89,6 +89,13 @@ class HomePanel implements View.OnClickListener {
             birthDate = now.get(Calendar.DATE);
             birthCountDownText.setText("您还未添加\n生日记录");
         } else {
+            if (birthMonth < now.get(Calendar.MONTH) + 1) {
+                birthYear = birthYear + 1;
+            } else if (birthMonth == now.get(Calendar.MONTH) + 1) {
+                if (birthDate < now.get(Calendar.DATE)) {
+                    birthYear = birthYear + 1;
+                }
+            }
             int remainTime = getBetweenDays();
             if (remainTime != 0) {
                 birthCountDownText.setText(name + "\n" + age + "岁生日\n倒计时:\n" + remainTime + "天");
@@ -187,7 +194,7 @@ class HomePanel implements View.OnClickListener {
                 age--;
             }
         }
-        return age+1;
+        return age + 1;
     }
 
     @Override
