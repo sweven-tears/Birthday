@@ -227,6 +227,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wake_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -239,6 +240,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:text="提醒时间"
-            android:textColor="#C48550" />
+            android:textColor="#C48550"
+            android:alpha="1"/>
     </LinearLayout>
 </LinearLayout>

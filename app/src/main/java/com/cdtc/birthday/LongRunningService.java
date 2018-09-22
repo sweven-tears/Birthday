@@ -15,6 +15,8 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 public class LongRunningService extends Service {
+    private int month,day;
+
     public LongRunningService() {
     }
 
@@ -26,6 +28,10 @@ public class LongRunningService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        month=intent.getExtras().getInt("");
+        day=intent.getExtras().getInt("");
+
         LogUtil.d("ALARMSERVICE", "onStartCommand()");
         startForeground(1, new Notification());
 
