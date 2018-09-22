@@ -72,7 +72,7 @@
             android:background="@drawable/redline" />
 
         <Button
-            android:id="@+id/add_brith_brith"
+            android:id="@+id/add_birth_birth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
