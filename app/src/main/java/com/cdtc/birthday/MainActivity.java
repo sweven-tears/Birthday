@@ -14,16 +14,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.cdtc.birthday.info.HomeImageInfo;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
