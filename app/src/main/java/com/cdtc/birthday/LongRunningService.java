@@ -29,8 +29,8 @@ public class LongRunningService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        month=intent.getExtras().getInt("");
-        day=intent.getExtras().getInt("");
+//        month=intent.getExtras().getInt("");
+//        day=intent.getExtras().getInt("");
 
         LogUtil.d("ALARMSERVICE", "onStartCommand()");
         startForeground(1, new Notification());
