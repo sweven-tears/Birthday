@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,11 +20,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,9 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SHOW_HOME = 1, SHOW_CALENDER = 2, SHOW_MINE = 3;
 
-
     private RecyclerView birthHomeRecycler;
 
+    private TextView actionBarTitle, actionBarAdd;
+    private LinearLayoutManager layoutManager;
+
+    private BottomNavigationView navigation;
+    private long firstTime;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -42,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    // 双击Home键返回第一个生日卡片
+                    long secondTime = System.currentTimeMillis();
+                    if (secondTime - firstTime > 1000) {
+                        firstTime = secondTime;
+                    } else {
+                        layoutManager.scrollToPositionWithOffset(1, 0);
+                    }
                     showPanel(SHOW_HOME);
                     return true;
                 case R.id.navigation_calender:
@@ -54,15 +71,24 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Resources res = super.getResources();
+        Configuration config = new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.action_bar_home);
 
         initId();
         initData();
@@ -75,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
      * [初始化布局中的id资源]
      */
     private void initId() {
+        actionBarTitle = findViewById(R.id.actionbar_title);
+        actionBarAdd = findViewById(R.id.action_bar_add);
+
         panelHome = findViewById(R.id.id_home);
         panelCalender = findViewById(R.id.id_calender);
         panelMine = findViewById(R.id.id_mine);
@@ -102,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             birthInfos.add(new BirthInfo("小乔", "2026-2-16", 7));
         }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        layoutManager = new LinearLayoutManager(MainActivity.this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         layoutManager.scrollToPositionWithOffset(1, 0);
         birthHomeRecycler.setLayoutManager(layoutManager);
@@ -119,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
      * [显示当前页面]
      */
     private void showPanel(int show) {
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
 
         panelHome.setVisibility(View.INVISIBLE);
         panelMine.setVisibility(View.INVISIBLE);
@@ -128,13 +155,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (show == SHOW_HOME) {
             panelHome.setVisibility(View.VISIBLE);
-            actionBar.setTitle("生辰日");
+            actionBarTitle.setText("生辰日");
+            actionBarAdd.setVisibility(View.VISIBLE);
         } else if (show == SHOW_CALENDER) {
             panelCalender.setVisibility(View.VISIBLE);
-            actionBar.setTitle("日历");
+            actionBarTitle.setText("日历");
+            actionBarAdd.setVisibility(View.INVISIBLE);
         } else if (show == SHOW_MINE) {
             panelMine.setVisibility(View.VISIBLE);
-            actionBar.setTitle("设置");
+            actionBarTitle.setText("设置");
+            actionBarAdd.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -143,6 +173,30 @@ public class MainActivity extends AppCompatActivity {
      */
     @SuppressLint("ClickableViewAccessibility")
     private void initListener() {
+        actionBarAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddBirthActivity.class);
+                startActivity(intent);
+            }
+        });
+        actionBarAdd.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        actionBarAdd.setTextColor(Color.GRAY);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        actionBarAdd.setTextColor(Color.WHITE);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        actionBarAdd.setTextColor(Color.WHITE);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     /**
