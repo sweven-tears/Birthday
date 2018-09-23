@@ -96,10 +96,9 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
      * 设置提醒时间
      */
     private void setWakeTime() {
-        wakeUpText.setText("提醒时间 | ");
         final Calendar currentSetTime = Calendar.getInstance();
-        int hour = currentSetTime.get(Calendar.HOUR_OF_DAY);
-        int minute = currentSetTime.get(Calendar.MINUTE);
+        final int hour = currentSetTime.get(Calendar.HOUR_OF_DAY);
+        final int minute = currentSetTime.get(Calendar.MINUTE);
         TimePickerDialog timePickerDialog = new TimePickerDialog(AddBirthActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -108,9 +107,9 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
                         currentSetTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         currentSetTime.set(Calendar.MINUTE, minuteOfDay);
                         if (minuteOfDay < 10) {
-                            wakeUpText.append(hourOfDay + ":0" + minuteOfDay);
+                            wakeUpText.setText("提醒时间 | "+hourOfDay + ":0" + minuteOfDay);
                         } else {
-                            wakeUpText.append(hourOfDay + ":" + minuteOfDay);
+                            wakeUpText.setText("提醒时间 | "+hourOfDay + ":" + minuteOfDay);
                         }
                         LogUtil.d("TIMEPICKERDIALOG", currentSetTime.getTimeInMillis() + "");
                     }
@@ -118,6 +117,7 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
         timePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
+                LogUtil.d("DIALOGCANCEL",hour+" : "+minute);
                 wakeUpText.setEnabled(true);
             }
         });
