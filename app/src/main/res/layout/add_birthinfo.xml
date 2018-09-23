@@ -31,7 +31,7 @@
             android:background="@drawable/redline"/>
 
         <EditText
-            android:id="@+id/add_brith_name"
+            android:id="@+id/add_birth_name"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -81,7 +81,7 @@
             android:gravity="center_vertical"
             android:paddingRight="20dp"
             android:background="@null"
-            android:text="点击设置生日 "
+            android:hint="点击设置生日 "
             android:lines="1"
             android:textSize="18sp" />
 
@@ -109,7 +109,7 @@
             android:background="@drawable/redline" />
 
         <EditText
-            android:id="@+id/add_brith_con"
+            android:id="@+id/add_birth_con"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -154,7 +154,7 @@
             android:background="@drawable/redline" />
 
         <EditText
-            android:id="@+id/add_brith_zhufuduanxin"
+            android:id="@+id/add_birth_rel"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -166,7 +166,6 @@
             android:paddingRight="20dp"
             android:textSize="18sp"
             android:textStyle="normal"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -186,6 +185,7 @@
             android:textColor="#C48550" />
 
         <Switch
+            android:id="@+id/float_window_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -211,6 +211,7 @@
             android:textColor="#C48550" />
 
         <Switch
+            android:id="@+id/lock_screen_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -234,7 +235,7 @@
             android:layout_weight="1"
             android:alpha="1"
             android:gravity="center_vertical"
-            android:text="提醒时间"
+            android:text="提醒时间 | "
             android:textColor="#C48550"/>
     </LinearLayout>
 </LinearLayout>

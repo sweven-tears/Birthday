@@ -19,6 +19,12 @@ public class GuardReceiver extends BroadcastReceiver {
 //            context.startActivity(mIntent);
             Intent sIntent = new Intent(context, LongRunningService.class);
             context.startService(sIntent);
+        }else if (Intent.ACTION_SCREEN_OFF.equals(action)){
+            LogUtil.d("Log+","ScreenOffReceiver");
+            Intent lockScreen=new Intent(context,LockScreenActivity.class);
+            lockScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    |Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            context.startActivity(lockScreen);
         }
     }
 }
