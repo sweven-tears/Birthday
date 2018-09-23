@@ -213,9 +213,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
         public void onClick(View view) {
             if (view.getId() == R.id.birth_layout) {
                 //TODO 打开信息详情页面
-                Intent intent = new Intent(context, AddBirthActivity.class);
-                context.startActivity(intent);
-                Toast.makeText(context, "打开编辑页", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "打开详情页", Toast.LENGTH_SHORT).show();
             }
         }
 
