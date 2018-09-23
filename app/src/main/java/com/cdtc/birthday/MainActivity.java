@@ -13,11 +13,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,24 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SHOW_HOME = 1, SHOW_CALENDER = 2, SHOW_MINE = 3;
 
-    private LinearLayout birthLayout;
-    private TextView birthCountDown, birthYearMonthText, birthDateText;
 
-    private static final int backgroundImage[] = {
-            R.drawable.home_background_01, R.drawable.home_background_02,
-            R.drawable.home_background_03, R.drawable.home_background_04,
-            R.drawable.home_background_05, R.drawable.home_background_06,
-            R.drawable.home_background_07, R.drawable.home_background_08,};
-
-    private static final int foregroundImage[] = {
-            R.drawable.home_foreground_01, R.drawable.home_foreground_02,
-            R.drawable.home_foreground_03, R.drawable.home_foreground_04,
-            R.drawable.home_foreground_05, R.drawable.home_foreground_06,
-            R.drawable.home_foreground_07, R.drawable.home_foreground_08,};
-
-    private static final int fontColor[] = {
-            Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
-            Color.BLACK, Color.BLACK, Color.WHITE, Color.WHITE};
+    private RecyclerView birthHomeRecycler;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -90,10 +79,7 @@ public class MainActivity extends AppCompatActivity {
         panelCalender = findViewById(R.id.id_calender);
         panelMine = findViewById(R.id.id_mine);
 
-        birthLayout = findViewById(R.id.birth_layout);
-        birthCountDown = findViewById(R.id.birth_count_down);
-        birthYearMonthText = findViewById(R.id.birth_year_month);
-        birthDateText = findViewById(R.id.birth_day);
+        birthHomeRecycler = findViewById(R.id.home_panel_recycler_view);
     }
 
     /**
@@ -103,19 +89,29 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_home);
         showPanel(SHOW_HOME);
 
-        //这三条信息是从数据库获取的
-        int style=0;
-        String brothDate = "2005-10-10";
-        String name = "小强";
-//        String birthday="0000-00-00";
-//        String name="无记录";
+        ArrayList<BirthInfo> birthInfos = new ArrayList<>();
+        birthInfos.add(new BirthInfo());
+        for (int i = 0; i < 5; i++) {
+            birthInfos.add(new BirthInfo("李刚", "1999-9-23", 1));
+            birthInfos.add(new BirthInfo("东方红叶", "2003-10-12", 4));
+            birthInfos.add(new BirthInfo("钟晓珊", "1998-10-12", 0));
+            birthInfos.add(new BirthInfo("Peter", "1998-2-17", 2));
+            birthInfos.add(new BirthInfo("Mr.Li", "2013-3-15", 6));
+            birthInfos.add(new BirthInfo("Sweven Tears", "2005-7-21", 5));
+            birthInfos.add(new BirthInfo("小落", "1997-9-15", 3));
+            birthInfos.add(new BirthInfo("小乔", "2026-2-16", 7));
+        }
 
-        new HomePanel(MainActivity.this, birthLayout,
-                birthCountDown, birthYearMonthText, birthDateText,
-                brothDate.split("-"), name, fontColor[style]);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager.scrollToPositionWithOffset(1, 0);
+        birthHomeRecycler.setLayoutManager(layoutManager);
+        new PagerSnapHelper().attachToRecyclerView(birthHomeRecycler);
+        birthHomeRecycler.addItemDecoration(new SpaceItemDecoration(70));
+        birthHomeRecycler.setItemAnimator(new DefaultItemAnimator());
 
-        panelHome.setBackgroundResource(backgroundImage[style]);
-        birthLayout.setBackgroundResource(foregroundImage[style]);
+        BirthHomeAdapter birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthInfos);
+        birthHomeRecycler.setAdapter(birthHomeAdapter);
 
     }
 

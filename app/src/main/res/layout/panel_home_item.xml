@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="8dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/home_panel_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/home_background_01"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/birth_count_down"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:background="@drawable/text_area_round_background"
+            android:gravity="center"
+            android:maxEms="5"
+            android:singleLine="false"
+            android:text="13岁生日\n倒计时:\nxx天"
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/birth_card_calender"
+            android:layout_width="200dp"
+            android:layout_height="240dp"
+            app:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:id="@+id/birth_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/home_foreground_01"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/birth_year_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="10dp"
+                    android:text="2018年9月"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/birth_day"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/text_area_style"
+                    android:gravity="center"
+                    android:text="30"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
