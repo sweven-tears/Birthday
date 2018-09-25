@@ -2,11 +2,9 @@ package com.cdtc.birthday;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cdtc.birthday.util.BirthBean;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,7 +25,7 @@ import java.util.Calendar;
  */
 public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.BirthHomeViewHolder> {
 
-    private ArrayList<BirthInfo> birthInfoArrayList;
+    private ArrayList<BirthBean> birthBeanArrayList;
     private LayoutInflater inflater;
     private Context context;
 
@@ -45,9 +45,10 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
             Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
             Color.BLACK, Color.BLACK, Color.WHITE, Color.WHITE};
 
-    BirthHomeAdapter(Context context, ArrayList<BirthInfo> birthDate) {
+    BirthHomeAdapter(Context context, ArrayList<BirthBean> birthDate) {
         this.context = context;
-        this.birthInfoArrayList = birthDate;
+        this.birthBeanArrayList = birthDate;
+        birthBeanArrayList.add(0,new BirthBean());
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -60,14 +61,11 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
 
     @Override
     public void onBindViewHolder(@NonNull BirthHomeViewHolder holder, int position) {
-        String name = birthInfoArrayList.get(position).getName();
-        String birthday = birthInfoArrayList.get(position).getBirthday();
-        int imageStyle = birthInfoArrayList.get(position).getImageStyle();
+        String name = birthBeanArrayList.get(position).getName();
+        String birthday = birthBeanArrayList.get(position).getBirthday();
+        int imageStyle = birthBeanArrayList.get(position).getImageStyle();
 
         if (position == 0) {
-            holder.setVisibility(false);
-        }
-        else if (position==getItemCount()-1){
             holder.setVisibility(false);
         }
         else {
@@ -84,7 +82,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
 
     @Override
     public int getItemCount() {
-        return birthInfoArrayList.size();
+        return birthBeanArrayList.size();
     }
 
     /**

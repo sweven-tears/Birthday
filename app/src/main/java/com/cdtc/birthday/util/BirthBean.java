@@ -1,21 +1,21 @@
-package com.cdtc.birthday;
+package com.cdtc.birthday.util;
 
 /**
  * Created by Sweven on 2018/9/23.
  * Email:sweventears@Foxmail.com
  */
-public class BirthInfo {
+public class BirthBean {
     private String name;
     private String birthday;
     private int imageStyle;
 
-    BirthInfo(String name, String birthday, int imageStyle) {
+    public BirthBean(String name, String birthday, int imageStyle) {
         this.name = name;
         this.birthday = birthday;
         this.imageStyle = imageStyle;
     }
 
-    BirthInfo() {
+    public BirthBean() {
 
     }
 
@@ -41,5 +41,14 @@ public class BirthInfo {
 
     public void setImageStyle(int imageStyle) {
         this.imageStyle = imageStyle;
+    }
+
+    @Override
+    public String toString() {
+        return "BirthBean{" +
+                "name='" + name + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", imageStyle=" + imageStyle +
+                '}';
     }
 }

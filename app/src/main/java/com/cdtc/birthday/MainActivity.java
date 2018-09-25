@@ -15,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +24,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import com.cdtc.birthday.DeskAlert.DeskAlertService;
+import com.cdtc.birthday.util.BirthBean;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 设置字体大小不随系统字体大小的改变而改变
         Resources res = super.getResources();
         Configuration config = new Configuration();
         config.setToDefaults();
@@ -95,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
         initListener();
 
         startAllService();
+
+        Intent intent = new Intent(this, DeskAlertService.class);
+        intent.putExtra("type", DeskAlertService.OPEN);
+        startService(intent);
     }
 
     /**
@@ -118,17 +123,16 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_home);
         showPanel(SHOW_HOME);
 
-        ArrayList<BirthInfo> birthInfos = new ArrayList<>();
-        birthInfos.add(new BirthInfo());
+        ArrayList<BirthBean> birthBeans = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            birthInfos.add(new BirthInfo("李刚", "1999-9-23", 1));
-            birthInfos.add(new BirthInfo("东方红叶", "2003-10-12", 4));
-            birthInfos.add(new BirthInfo("钟晓珊", "1998-10-12", 0));
-            birthInfos.add(new BirthInfo("Peter", "1998-2-17", 2));
-            birthInfos.add(new BirthInfo("Mr.Li", "2013-3-15", 6));
-            birthInfos.add(new BirthInfo("Sweven Tears", "2005-7-21", 5));
-            birthInfos.add(new BirthInfo("小落", "1997-9-15", 3));
-            birthInfos.add(new BirthInfo("小乔", "2026-2-16", 7));
+            birthBeans.add(new BirthBean("李刚", "1999-9-23", 1));
+            birthBeans.add(new BirthBean("东方红叶", "2003-10-12", 4));
+            birthBeans.add(new BirthBean("钟晓珊", "1998-10-12", 0));
+            birthBeans.add(new BirthBean("Peter", "1998-2-17", 2));
+            birthBeans.add(new BirthBean("Mr.Li", "2013-3-15", 6));
+            birthBeans.add(new BirthBean("Sweven Tears", "2005-7-21", 5));
+            birthBeans.add(new BirthBean("小落", "1997-9-15", 3));
+            birthBeans.add(new BirthBean("小乔", "2026-2-16", 7));
         }
 
         layoutManager = new LinearLayoutManager(MainActivity.this);
@@ -137,9 +141,8 @@ public class MainActivity extends AppCompatActivity {
         birthHomeRecycler.setLayoutManager(layoutManager);
         new PagerSnapHelper().attachToRecyclerView(birthHomeRecycler);
         birthHomeRecycler.addItemDecoration(new SpaceItemDecoration(70));
-        birthHomeRecycler.setItemAnimator(new DefaultItemAnimator());
 
-        BirthHomeAdapter birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthInfos);
+        BirthHomeAdapter birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthBeans);
         birthHomeRecycler.setAdapter(birthHomeAdapter);
 
     }
