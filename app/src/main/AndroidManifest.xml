@@ -60,7 +60,7 @@
             android:permission="1.0"
             tools:ignore="InnerclassSeparator" />
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".view.LoginActivity">
         </activity>
         <activity android:name=".RegisterActivity">
 

@@ -5,13 +5,38 @@ package com.cdtc.birthday.network.response;
  * Email:sweventears@Foxmail.com
  */
 public class BaseResponse {
-    /**
-     * 返回代码
-     */
-    public int code;
 
     /**
-     * 返回消息
+     * 状态码
      */
-    public String message;
+    public int status;
+
+    /**
+     * 描述信息
+     */
+    public String desc;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "status=" + status +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
 }

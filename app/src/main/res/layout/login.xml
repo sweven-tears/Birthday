@@ -13,7 +13,7 @@
         android:background="@mipmap/img"/>
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -37,6 +37,7 @@
         android:paddingLeft="8dp"/>
 
     <Button
+        android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
