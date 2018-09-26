@@ -12,12 +12,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.cdtc.birthday.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,9 +108,9 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
                         currentSetTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         currentSetTime.set(Calendar.MINUTE, minuteOfDay);
                         if (minuteOfDay < 10) {
-                            wakeUpText.setText("提醒时间 | "+hourOfDay + ":0" + minuteOfDay);
+                            wakeUpText.setText("提醒时间 | " + hourOfDay + ":0" + minuteOfDay);
                         } else {
-                            wakeUpText.setText("提醒时间 | "+hourOfDay + ":" + minuteOfDay);
+                            wakeUpText.setText("提醒时间 | " + hourOfDay + ":" + minuteOfDay);
                         }
                         LogUtil.d("TIMEPICKERDIALOG", currentSetTime.getTimeInMillis() + "");
                     }
@@ -117,7 +118,7 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
         timePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
-                LogUtil.d("DIALOGCANCEL",hour+" : "+minute);
+                LogUtil.d("DIALOGCANCEL", hour + " : " + minute);
                 wakeUpText.setEnabled(true);
             }
         });
@@ -130,15 +131,17 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
         timePickerDialog.show();
     }
 
-    /** 检测服务是否启动 */
-    private boolean isServiceWorking(Context context, String serviceName){
-        ActivityManager activityManager= (ActivityManager)
+    /**
+     * 检测服务是否启动
+     */
+    private boolean isServiceWorking(Context context, String serviceName) {
+        ActivityManager activityManager = (ActivityManager)
                 context.getSystemService(Context.ACTIVITY_SERVICE);
-        ArrayList<ActivityManager.RunningServiceInfo> runningServiceInfos=
+        ArrayList<ActivityManager.RunningServiceInfo> runningServiceInfos =
                 (ArrayList<ActivityManager.RunningServiceInfo>)
                         activityManager.getRunningServices(Integer.MAX_VALUE);
-        for (int i=0;i<runningServiceInfos.size();i++){
-            if (runningServiceInfos.get(i).service.getClassName().equals(serviceName)){
+        for (int i = 0; i < runningServiceInfos.size(); i++) {
+            if (runningServiceInfos.get(i).service.getClassName().equals(serviceName)) {
                 return true;
             }
         }
@@ -148,7 +151,7 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this,LockScreenService.class));
+        stopService(new Intent(this, LockScreenService.class));
     }
 
     @Override
@@ -200,10 +203,10 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-        if (isChecked){
-            startService(new Intent(this,LockScreenService.class));
-        }else{
-            stopService(new Intent(this,LockScreenService.class));
+        if (isChecked) {
+            startService(new Intent(this, LockScreenService.class));
+        } else {
+            stopService(new Intent(this, LockScreenService.class));
         }
     }
 

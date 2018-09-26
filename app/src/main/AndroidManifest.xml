@@ -65,6 +65,15 @@
         <activity android:name=".RegisterActivity">
 
         </activity>
+
+        <activity android:name=".LockScreenActivity">
+        </activity>
+
+        <service
+            android:name=".LockScreenService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
     </application>
 
 </manifest>

@@ -27,14 +27,15 @@ import android.widget.Toast;
 
 import com.cdtc.birthday.DeskAlert.DeskAlertService;
 import com.cdtc.birthday.util.BirthBean;
+import com.cdtc.birthday.utils.LogUtil;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ConstraintLayout panelCalender;
+    private ConstraintLayout panelCalender,panelMine;
     private LinearLayout panelHome;
-    private LinearLayout panelMine;
+//    private LinearLayout panelMine;
 
     private static final int SHOW_HOME = 1, SHOW_CALENDER = 2, SHOW_MINE = 3;
 

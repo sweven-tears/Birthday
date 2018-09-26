@@ -9,9 +9,8 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.cdtc.birthday.LogUtil;
+import com.cdtc.birthday.utils.LogUtil;
 import com.cdtc.birthday.MainActivity;
 import com.cdtc.birthday.R;
 import com.cdtc.birthday.network.Api;

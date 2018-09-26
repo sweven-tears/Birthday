@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
+import com.cdtc.birthday.utils.LogUtil;
+
 public class LockScreenService extends Service {
     private GuardReceiver mGuardReceiver;
 

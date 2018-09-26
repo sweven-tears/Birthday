@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.cdtc.birthday.utils.LogUtil;
+
 public class GuardReceiver extends BroadcastReceiver {
 
     @Override
