@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -84,41 +85,44 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_btn);
 
         //绑定登录事件
-        loginButton.setOnClickListener(view -> {
-            String phone = loginPhone.getText().toString();
-            String password = passWord.getText().toString();
-            if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password)) {
-                LoginRequest request = new LoginRequest();
-                request.setLoginPhone(phone);
-                request.setPassword(password);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phone = loginPhone.getText().toString();
+                String password = passWord.getText().toString();
+                if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password)) {
+                    LoginRequest request = new LoginRequest();
+                    request.setLoginPhone(phone);
+                    request.setPassword(password);
 
-                OkHttpUtil.doJsonPost(Api.LOGIN, new Gson().toJson(request), new Callback() {
-                    @Override
-                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        LogUtil.i("OkHttpUtil", "onFailure: 请求失败" + e.getMessage());
-                    }
-
-                    @Override
-                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        String responseString = response.body().string();
-                        LoginResponse loginResponse;
-                        try {
-
-                            loginResponse = new Gson().fromJson(responseString, LoginResponse.class);
-                            if (loginResponse.status == OkHttpUtil.OK) {
-                                LogUtil.v(TAG, "登录成功 ： token " + loginResponse.getData().getToken());
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                               ToastUtil.showShort(activity, loginResponse.desc);
-                            }
-                        } catch (Exception ignored) {
-
+                    OkHttpUtil.doJsonPost(Api.LOGIN, new Gson().toJson(request), new Callback() {
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            LogUtil.i("OkHttpUtil", "onFailure: 请求失败" + e.getMessage());
                         }
-                    }
-                });
-            } else {
-                ToastUtil.showShort(activity, "输入有误，请重新输入");
+
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            String responseString = response.body().string();
+                            LoginResponse loginResponse;
+                            try {
+
+                                loginResponse = new Gson().fromJson(responseString, LoginResponse.class);
+                                if (loginResponse.status == OkHttpUtil.OK) {
+                                    LogUtil.v(TAG, "登录成功 ： token " + loginResponse.getData().getToken());
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    ToastUtil.showShort(activity, loginResponse.desc);
+                                }
+                            } catch (Exception ignored) {
+
+                            }
+                        }
+                    });
+                } else {
+                    ToastUtil.showShort(activity, "输入有误，请重新输入");
+                }
             }
         });
     }

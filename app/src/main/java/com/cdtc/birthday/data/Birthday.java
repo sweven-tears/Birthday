@@ -1,6 +1,6 @@
-package com.cdtc.birthday.util;
+package com.cdtc.birthday.data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sweven on 2018/9/25.
@@ -8,10 +8,29 @@ import java.util.ArrayList;
  */
 public class Birthday {
 
+    /**
+     * 用户手机号
+     */
     public String phone;
+
+    /**
+     * 用户名
+     */
     public String username;
-    public ArrayList<BirthBean> birthBeans;
+
+    /**
+     * 用户存储的生日信息
+     */
+    public List<BirthBean> birthBeans;
+
+    /**
+     * 用户登录状态
+     */
     public boolean isLogin;
+
+    /**
+     * 账户本地锁定状态
+     */
     public boolean isLock;
 
     public String getPhone() {
@@ -30,11 +49,11 @@ public class Birthday {
         this.username = username;
     }
 
-    public ArrayList<BirthBean> getBirthBeans() {
+    public List<BirthBean> getBirthBeans() {
         return birthBeans;
     }
 
-    public void setBirthBeans(ArrayList<BirthBean> birthBeans) {
+    public void setBirthBeans(List<BirthBean> birthBeans) {
         this.birthBeans = birthBeans;
     }
 

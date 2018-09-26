@@ -14,10 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cdtc.birthday.util.BirthBean;
+import com.cdtc.birthday.data.BirthBean;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Sweven on 2018/9/23.
@@ -25,7 +25,7 @@ import java.util.Calendar;
  */
 public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.BirthHomeViewHolder> {
 
-    private ArrayList<BirthBean> birthBeanArrayList;
+    private List<BirthBean> birthBeanArrayList;
     private LayoutInflater inflater;
     private Context context;
 
@@ -45,10 +45,12 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
             Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
             Color.BLACK, Color.BLACK, Color.WHITE, Color.WHITE};
 
-    BirthHomeAdapter(Context context, ArrayList<BirthBean> birthDate) {
+    BirthHomeAdapter(Context context, List<BirthBean> birthDate) {
         this.context = context;
         this.birthBeanArrayList = birthDate;
-        birthBeanArrayList.add(0,new BirthBean());
+
+        // 处理第一张卡片的异常
+        birthBeanArrayList.add(0, new BirthBean());
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -67,8 +69,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
 
         if (position == 0) {
             holder.setVisibility(false);
-        }
-        else {
+        } else {
             if (position % 5 == 0) {
                 holder.setVisibility(true);
             }
@@ -91,30 +92,81 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
      * @param holder     .
      * @param name       过生日人的名字
      * @param birthday   出生年月日
-     * @param imageStyle 背景
+     * @param imageStyle 背景编号
      */
     @SuppressLint("SetTextI18n")
     private void initData(BirthHomeViewHolder holder, String name, String birthday, int imageStyle) {
 
-        int birthYear = Integer.parseInt(birthday.split("-")[0]);
-        int birthMonth = Integer.parseInt(birthday.split("-")[1]);
-        int birthDate = Integer.parseInt(birthday.split("-")[2]);
-        int age = DealHomeBirthDate.getAge(birthYear, birthMonth, birthDate);
-
         holder.birthCountDownText.setTextColor(fontColor[imageStyle]);
         holder.birthYearMonthText.setTextColor(fontColor[imageStyle]);
 
+        String showText = getShowCountDownText(name, birthday);
+        holder.birthCountDownText.setText(showText);
+
+        int nextBirthday[] = getNextBirthday(name, birthday);
+        int nextYear = nextBirthday[0];
+        int nextMonth = nextBirthday[1];
+        int nextDate = nextBirthday[2];
+        holder.birthYearMonthText.setText(nextYear + "年" + nextMonth + "月");
+        holder.birthDateText.setText(String.valueOf(nextDate));
+
+        String week = DealHomeBirthDate.getWeekOfDate(nextYear, nextMonth, nextDate);
+        holder.birthWeekText.setText(week);
+        // Extra Information
+        String animalSign = DealHomeBirthDate.animalsYear(nextYear);
+        holder.birthLunarYearText.setText("戊戌年[" + animalSign + "年]");
+
+        holder.birthLunarMonthDateText.setText("八月" + "\t" + "十五");
+
+        String constellation = DealHomeBirthDate.constellation(birthday);
+        holder.birthConstellationText.setText(constellation);
+
+    }
+
+    private int[] getNextBirthday(String name, String birthday) {
+        int birthYear = Integer.parseInt(birthday.split("-")[0]);
+        int birthMonth = Integer.parseInt(birthday.split("-")[1]);
+        int birthDate = Integer.parseInt(birthday.split("-")[2]);
         Calendar now = Calendar.getInstance();
 
+        int nextYear = now.get(Calendar.YEAR);
+        int nextMonth;
+        int nextDate;
         if (name.equals("无记录")) {
-            birthYear = now.get(Calendar.YEAR);
-            birthMonth = now.get(Calendar.MONTH) + 1;
-            birthDate = now.get(Calendar.DATE);
-            holder.birthCountDownText.setText("您还未添加\n生日记录");
+            nextMonth = now.get(Calendar.MONTH) + 1;
+            nextDate = now.get(Calendar.DATE);
+        } else {
+            if (birthYear < now.get(Calendar.YEAR)) {
+                birthYear = now.get(Calendar.YEAR)+1;
+                if (birthMonth < now.get(Calendar.MONTH) + 1) {
+                    nextYear = birthYear + 1;
+                } else if (birthMonth == now.get(Calendar.MONTH) + 1) {
+                    if (birthDate < now.get(Calendar.DATE)) {
+                        nextYear = birthYear + 1;
+                    }
+                }
+            }
+            nextMonth = birthMonth;
+            nextDate = birthDate;
+        }
+        return new int[]{nextYear, nextMonth, nextDate};
+    }
+
+    private String getShowCountDownText(String name, String birthday) {
+        int birthYear = Integer.parseInt(birthday.split("-")[0]);
+        int birthMonth = Integer.parseInt(birthday.split("-")[1]);
+        int birthDate = Integer.parseInt(birthday.split("-")[2]);
+
+        int age = DealHomeBirthDate.getAge(birthYear, birthMonth, birthDate);
+
+        Calendar now = Calendar.getInstance();
+        String showText;
+        if (name.equals("无记录")) {
+            showText = "您还未添加\n生日记录";
         } else {
             if (birthYear >= now.get(Calendar.YEAR)) {
                 int remainTime = DealHomeBirthDate.getBetweenDays(birthYear, birthMonth, birthDate);
-                holder.birthCountDownText.setText(name + "\n离出生还有\n" + remainTime + "天\no(ﾟДﾟ)っ！");
+                showText = name + "\n离出生还有\n" + remainTime + "天\no(ﾟДﾟ)っ！";
             } else {
                 birthYear = now.get(Calendar.YEAR);
                 if (birthMonth < now.get(Calendar.MONTH) + 1) {
@@ -126,22 +178,13 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
                 }
                 int remainTime = DealHomeBirthDate.getBetweenDays(birthYear, birthMonth, birthDate);
                 if (remainTime != 0) {
-                    holder.birthCountDownText.setText(name + "\n" + age + "岁生日\n倒计时:\n" + remainTime + "天");
+                    showText = name + "\n" + age + "岁生日\n倒计时:\n" + remainTime + "天";
                 } else {
-                    holder.birthCountDownText.setText(name + "\n" + age + "岁生日\n就是今天!");
+                    showText = name + "\n" + age + "岁生日\n就是今天!";
                 }
             }
         }
-
-        holder.birthYearMonthText.setText(birthYear + "年" + birthMonth + "月");
-        holder.birthDateText.setText(birthDate + "");
-
-        holder.birthWeekText.setText(DealHomeBirthDate.getWeekOfDate(birthYear, birthMonth, birthDate));
-        // Extra Information
-        holder.birthLunarYearText.setText("戊戌年[" + DealHomeBirthDate.animalsYear(birthYear) + "年]");
-        holder.birthLunarMonthDateText.setText("八月" + "\t" + "十五");
-        holder.birthConstellationText.setText(DealHomeBirthDate.constellation(birthMonth, birthDate));
-
+        return showText;
     }
 
     /**
@@ -215,6 +258,11 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
             }
         }
 
+        /**
+         * 设置item的可见性
+         *
+         * @param isVisible .
+         */
         public void setVisibility(boolean isVisible) {
             RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
             if (isVisible) {
