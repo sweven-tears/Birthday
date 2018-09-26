@@ -1,4 +1,4 @@
-package com.cdtc.birthday.DeskAlert;
+package com.cdtc.birthday.deskalert;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -8,11 +8,12 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cdtc.birthday.util.BirthBean;
+import com.cdtc.birthday.data.BirthBean;
 import com.cdtc.birthday.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class DeskAlertService extends Service {
     private final static String TAG = "TrafficService";
@@ -23,7 +24,7 @@ public class DeskAlertService extends Service {
     private TextView tv_traffic;
     private final int delayTime = 1000;
 
-    private int count=0;
+    private int count = 0;
     private Handler mHandler = new Handler();
     private Runnable mRefresh = new Runnable() {
         public void run() {
@@ -44,7 +45,7 @@ public class DeskAlertService extends Service {
             mHandler.postDelayed(this, delayTime);
         }
     };
-    private ArrayList<BirthBean> birthBeans;
+    private List<BirthBean> birthBeans;
 
     @Override
     public IBinder onBind(Intent intent) {

@@ -54,7 +54,7 @@
         </receiver>
 
         <service
-            android:name=".DeskAlert.DeskAlertService"
+            android:name=".deskalert.DeskAlertService"
             android:enabled="true"
             android:exported="true"
             android:permission="1.0"

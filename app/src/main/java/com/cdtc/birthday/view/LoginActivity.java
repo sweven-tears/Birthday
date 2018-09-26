@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_btn);
 
         //绑定登录事件
-        loginButton.setOnClickListener(view -> {
+        loginButton.setOnClickListener(view->{
             String phone = loginPhone.getText().toString();
             String password = passWord.getText().toString();
             if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password)) {
@@ -109,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
-                               ToastUtil.showShort(activity, loginResponse.desc);
+                                ToastUtil.showShort(activity, loginResponse.desc);
                             }
                         } catch (Exception ignored) {
 

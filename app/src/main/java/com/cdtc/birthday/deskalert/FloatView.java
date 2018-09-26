@@ -1,6 +1,5 @@
-package com.cdtc.birthday.DeskAlert;
+package com.cdtc.birthday.deskalert;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.view.Gravity;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 /**
  * Created by Sweven on 2018/9/24.

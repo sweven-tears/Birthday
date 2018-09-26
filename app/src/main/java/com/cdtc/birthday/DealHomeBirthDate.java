@@ -101,10 +101,18 @@ class DealHomeBirthDate {
         return Animals[(year - 4) % 12];
     }
 
-    public static String constellation(int month, int date) {
+    /**
+     * [根据出生日期计算星座]
+     *
+     * @param birthday 出生日期
+     * @return 星座
+     */
+    public static String constellation(String birthday) {
         final String[] cons = new String[]{"白羊座", "金牛座", "双子座", "巨蟹座", "狮子座",
                 "处女座", "天秤座", "天蝎座", "射手座", "摩羯座", "水瓶座", "双鱼座"};
         int position = 0;
+        int month = Integer.parseInt(birthday.split("-")[1]);
+        int date = Integer.parseInt(birthday.split("-")[2]);
         switch (month) {
             case 3:
                 if (date >= 21) {
