@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.cdtc.birthday.deskalert.DeskAlertService;
 import com.cdtc.birthday.data.BirthBean;
+import com.cdtc.birthday.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
