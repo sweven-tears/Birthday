@@ -25,16 +25,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cdtc.birthday.DeskAlert.DeskAlertService;
-import com.cdtc.birthday.util.BirthBean;
+import com.cdtc.birthday.deskalert.DeskAlertService;
+import com.cdtc.birthday.data.BirthBean;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ConstraintLayout panelCalender;
     private LinearLayout panelHome;
-    private LinearLayout panelMine;
+    private ConstraintLayout panelMine;
 
     private static final int SHOW_HOME = 1, SHOW_CALENDER = 2, SHOW_MINE = 3;
 
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_home);
         showPanel(SHOW_HOME);
 
-        ArrayList<BirthBean> birthBeans = new ArrayList<>();
+        List<BirthBean> birthBeans = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             birthBeans.add(new BirthBean("李刚", "1999-9-23", 1));
             birthBeans.add(new BirthBean("东方红叶", "2003-10-12", 4));
@@ -134,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
             birthBeans.add(new BirthBean("小落", "1997-9-15", 3));
             birthBeans.add(new BirthBean("小乔", "2026-2-16", 7));
         }
+
+//        Calendar cal=Calendar.getInstance();
+//        String today=cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.DATE);
+//        birthBeans.add(new BirthBean("无记录", today,0));
 
         layoutManager = new LinearLayoutManager(MainActivity.this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
