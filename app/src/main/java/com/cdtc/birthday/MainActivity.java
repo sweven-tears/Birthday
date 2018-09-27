@@ -27,10 +27,13 @@ import android.widget.Toast;
 
 import com.cdtc.birthday.data.BirthBean;
 import com.cdtc.birthday.utils.LogUtil;
+import com.cdtc.birthday.utils.ToastUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView actionBarTitle, actionBarAdd;
     private LinearLayoutManager layoutManager;
+
+    private TextView mRemarkTextView;
+    private CustomCalendarView customCalendarView;
 
     private BottomNavigationView navigation;
     private long firstTime;
@@ -113,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
         panelMine = findViewById(R.id.id_mine);
 
         birthHomeRecycler = findViewById(R.id.home_panel_recycler_view);
+
+        customCalendarView = findViewById(R.id.calendar);
+        mRemarkTextView = findViewById(R.id.remark_text_view);
     }
 
     /**
@@ -148,6 +157,11 @@ public class MainActivity extends AppCompatActivity {
         BirthHomeAdapter birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthBeans);
         birthHomeRecycler.setAdapter(birthHomeAdapter);
 
+        // 设置标注日期
+        List<Date> markDates = new ArrayList<>();
+        markDates.add(new Date());
+        customCalendarView.setMarkDates(markDates);
+
     }
 
     /**
@@ -179,29 +193,33 @@ public class MainActivity extends AppCompatActivity {
      */
     @SuppressLint("ClickableViewAccessibility")
     private void initListener() {
-        actionBarAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddBirthActivity.class);
-                startActivity(intent);
-            }
+
+        // 日历监听事件
+        customCalendarView.setOnCalendarViewListener((view, date) -> {
+            final SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
+            ToastUtil.showShort(MainActivity.this, format.format(date));
         });
-        actionBarAdd.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        actionBarAdd.setTextColor(Color.GRAY);
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        actionBarAdd.setTextColor(Color.WHITE);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        actionBarAdd.setTextColor(Color.WHITE);
-                        break;
-                }
-                return false;
+
+        // home页面右上角添加生日信息监听
+        actionBarAdd.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddBirthActivity.class);
+            startActivity(intent);
+        });
+
+        // home页面右上角图标的变化
+        actionBarAdd.setOnTouchListener((view, motionEvent) -> {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    actionBarAdd.setTextColor(Color.GRAY);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    actionBarAdd.setTextColor(Color.WHITE);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    actionBarAdd.setTextColor(Color.WHITE);
+                    break;
             }
+            return false;
         });
     }
 
