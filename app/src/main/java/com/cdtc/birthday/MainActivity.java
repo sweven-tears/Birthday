@@ -25,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cdtc.birthday.deskalert.DeskAlertService;
 import com.cdtc.birthday.data.BirthBean;
 import com.cdtc.birthday.utils.LogUtil;
 
@@ -100,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         startAllService();
 
-        Intent intent = new Intent(this, DeskAlertService.class);
-        intent.putExtra("type", DeskAlertService.OPEN);
-        startService(intent);
     }
 
     /**
