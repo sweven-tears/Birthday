@@ -113,10 +113,18 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
         String week = DealHomeBirthDate.getWeekOfDate(nextYear, nextMonth, nextDate);
         holder.birthWeekText.setText(week);
         // Extra Information
-        String animalSign = DealHomeBirthDate.animalsYear(nextYear);
-        holder.birthLunarYearText.setText("戊戌年[" + animalSign + "年]");
+        Calendar current = Calendar.getInstance();
+        current.set(nextYear, nextMonth - 1, nextDate);
+        CalendarUtil util = new CalendarUtil(current);
 
-        holder.birthLunarMonthDateText.setText("八月" + "\t" + "十五");
+        String lunarYear = util.cyclical();
+        String animalSign = DealHomeBirthDate.animalsYear(nextYear);
+        holder.birthLunarYearText.setText(lunarYear + "年[" + animalSign + "年]");
+
+        String lunarMonthDate = CalendarUtil.getCurrentDay(current);
+        lunarMonthDate = lunarMonthDate.substring(13, lunarMonthDate.length() - 2);
+        holder.birthLunarMonthDateText.setText(lunarMonthDate);
+
 
         String constellation = DealHomeBirthDate.constellation(birthday);
         holder.birthConstellationText.setText(constellation);
@@ -136,15 +144,16 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
             nextMonth = now.get(Calendar.MONTH) + 1;
             nextDate = now.get(Calendar.DATE);
         } else {
-            if (birthYear < now.get(Calendar.YEAR)) {
-                birthYear = now.get(Calendar.YEAR)+1;
+            if (birthYear <= now.get(Calendar.YEAR)) {
                 if (birthMonth < now.get(Calendar.MONTH) + 1) {
-                    nextYear = birthYear + 1;
+                    nextYear = nextYear + 1;
                 } else if (birthMonth == now.get(Calendar.MONTH) + 1) {
                     if (birthDate < now.get(Calendar.DATE)) {
-                        nextYear = birthYear + 1;
+                        nextYear = nextYear + 1;
                     }
                 }
+            } else {
+                nextYear = birthYear;
             }
             nextMonth = birthMonth;
             nextDate = birthDate;
