@@ -25,7 +25,6 @@ import java.util.Calendar;
 
 public class AddBirthActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
 
-    private TextView birthName;
     private TextView addBirthBirth;
     private TextView birthCon;
     private TextView birthRel;
@@ -45,7 +44,6 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
      * 绑定id
      */
     private void init() {
-        birthName = findViewById(R.id.add_birth_name);
         addBirthBirth = findViewById(R.id.add_birth_birth);
         addBirthBirth.setOnTouchListener(this);
         wakeUpText = findViewById(R.id.wake_time_text);

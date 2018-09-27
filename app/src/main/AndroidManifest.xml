@@ -4,6 +4,7 @@
     package="com.cdtc.birthday">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -29,7 +30,8 @@
         <service
             android:name=".LongRunningService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:process=":message">
             <intent-filter android:priority="1000">
 
                 <!-- 系统启动完成后调用 -->

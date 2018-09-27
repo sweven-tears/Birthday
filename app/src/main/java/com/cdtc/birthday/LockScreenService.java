@@ -19,6 +19,7 @@ public class LockScreenService extends Service {
         LogUtil.d("LOCKSCREENSERVICE","onCreate()");
         mGuardReceiver=new GuardReceiver();
         IntentFilter screenOffFilter=new IntentFilter();
+        screenOffFilter.addAction(Intent.ACTION_SCREEN_ON);
         screenOffFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mGuardReceiver,screenOffFilter);
     }
