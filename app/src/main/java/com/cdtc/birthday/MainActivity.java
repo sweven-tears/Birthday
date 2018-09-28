@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     private static ArrayList<BirthBean> birthBeans;
+    private BirthHomeAdapter birthHomeAdapter;
+    private static int presentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,15 +139,15 @@ public class MainActivity extends AppCompatActivity {
         showPanel(SHOW_HOME);
 
         birthBeans = new ArrayList<>();
-        for (int i = 0; i < 0; i++) {
-            birthBeans.add(new BirthBean("李刚", new BornDay(1999, 9, 23), false, 1));
-            birthBeans.add(new BirthBean("东方红叶", new BornDay(2009, 9, 30), false, 4));
-            birthBeans.add(new BirthBean("钟晓珊", new BornDay(2001, 10, 3), false, 0));
-            birthBeans.add(new BirthBean("Peter", new BornDay(2010, 11, 23), false, 2));
-            birthBeans.add(new BirthBean("Mr.Li", new BornDay(2004, 12, 23), true, 6));
-            birthBeans.add(new BirthBean("Sweven Tears", new BornDay(2008, 1, 23), true, 5));
-            birthBeans.add(new BirthBean("小落", new BornDay(2015, 3, 23), true, 3));
-            birthBeans.add(new BirthBean("小乔", new BornDay(2022, 6, 23), false, 7));
+        for (int i = 0; i < 1; i++) {
+            birthBeans.add(new BirthBean("李刚", new BornDay(1999, 9, 23), false ,false,new int[]{0,0}));
+            birthBeans.add(new BirthBean("东方红叶", new BornDay(2009, 9, 30), false,true,new int[]{0,0}));
+            birthBeans.add(new BirthBean("钟晓珊", new BornDay(2001, 10, 3), false,true,new int[]{0,0}));
+            birthBeans.add(new BirthBean("Peter", new BornDay(2010, 11, 23), false,false,new int[]{0,0}));
+            birthBeans.add(new BirthBean("Mr.Li", new BornDay(2004, 12, 26), true,true,new int[]{0,0}));
+            birthBeans.add(new BirthBean("Sweven Tears", new BornDay(2008, 1, 23), true,false,new int[]{0,0}));
+            birthBeans.add(new BirthBean("小落", new BornDay(2015, 3, 23), true,false,new int[]{0,0}));
+            birthBeans.add(new BirthBean("小乔", new BornDay(2022, 6, 23), false,false,new int[]{0,0}));
         }
 
         layoutManager = new LinearLayoutManager(MainActivity.this);
@@ -170,10 +172,10 @@ public class MainActivity extends AppCompatActivity {
         if (birthBean.size() < 1) {
             Calendar cal = Calendar.getInstance();
             BornDay now = new BornDay(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH) + 1), cal.get(Calendar.DATE));
-            birthBean.add(new BirthBean("无记录", now, 0));
+            birthBean.add(new BirthBean("无记录", now));
         }
         layoutManager.scrollToPositionWithOffset(1, 0);
-        BirthHomeAdapter birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthBean);
+        birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthBean);
         birthHomeRecycler.setAdapter(birthHomeAdapter);
     }
 
@@ -233,6 +235,12 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
             return false;
+        });
+
+        // 启动生日详情界面
+        birthHomeAdapter.setBirthCardListener((intent,position) -> {
+            startActivityForResult(intent, BirthDetailActivity.REQUEST);
+            presentPosition=position;
         });
     }
 
@@ -312,8 +320,23 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == BirthDetailActivity.REQUEST && resultCode == BirthDetailActivity.RESULT) {
             assert data != null;
             Bundle bundle = data.getBundleExtra("allMessage");
+            String name = bundle.getString("name");
+            int[] birthday = bundle.getIntArray("birthday");
+            int[] nextBirth = bundle.getIntArray("nextBirth");
+            int age = bundle.getInt("age");
+            int[] clockTime = bundle.getIntArray("clockTime");
+            boolean isLunarBirth = bundle.getBoolean("isLunarBirth");
+            boolean isLockScreen = bundle.getBoolean("isLockScreen");
 
+            assert birthday!=null;
+            BornDay day=new BornDay(birthday[0],birthday[1],birthday[2]);
+            BirthBean bean = new BirthBean(name,day,isLunarBirth,isLockScreen,clockTime);
+            updateBirthCard(bean);
         }
+    }
+
+    private void updateBirthCard(BirthBean bean) {
+        birthHomeAdapter.updateItem(bean,presentPosition);
     }
 
     private void insertBirthCard(BirthBean bean) {

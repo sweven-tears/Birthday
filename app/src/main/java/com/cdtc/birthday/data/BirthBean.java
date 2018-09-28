@@ -71,21 +71,27 @@ public class BirthBean {
 
     private static final int NEXT_BIRTH_YEAR = 0, NEXT_BIRTH_MONTH = 1, NEXT_BIRTH_DATE = 2;
 
-    public BirthBean(String name, BornDay birthday, int imageStyle) {
-        this.name = name;
-        this.birthday = birthday;
-        this.imageStyle = imageStyle;
-    }
-
-    public BirthBean(String name, BornDay birthday, boolean isLunarBirth, int imageStyle) {
+    public BirthBean(String name, BornDay birthday, boolean isLunarBirth, boolean isLockScreen, int[] clockTime) {
         this.name = name;
         this.birthday = birthday;
         this.isLunarBirth = isLunarBirth;
-        this.imageStyle = imageStyle;
+        this.isLockScreen = isLockScreen;
+        this.clockTime = clockTime;
     }
 
     public BirthBean() {
 
+    }
+
+    /**
+     * [未添加数据时的空数据定义]
+     *
+     * @param name     .
+     * @param birthday .
+     */
+    public BirthBean(String name, BornDay birthday) {
+        this.name = name;
+        this.birthday = birthday;
     }
 
     public String getName() {
@@ -173,21 +179,33 @@ public class BirthBean {
     }
 
     public int getNextBirthYear() {
-        return isLunarBirth() ?
+        return nextBirthYear == 0 ? isLunarBirth() ?
                 getNextLunarBirthday()[NEXT_BIRTH_YEAR] :
-                getNextSolarBirthday()[NEXT_BIRTH_YEAR];
+                getNextSolarBirthday()[NEXT_BIRTH_YEAR] : nextBirthYear;
+    }
+
+    public void setNextBirthYear(int nextBirthYear) {
+        this.nextBirthYear = nextBirthYear;
     }
 
     public int getNextBirthMonth() {
-        return isLunarBirth() ?
+        return nextBirthMonth == 0 ? isLunarBirth() ?
                 getNextLunarBirthday()[NEXT_BIRTH_MONTH] :
-                getNextSolarBirthday()[NEXT_BIRTH_MONTH];
+                getNextSolarBirthday()[NEXT_BIRTH_MONTH] : nextBirthMonth;
+    }
+
+    public void setNextBirthMonth(int nextBirthMonth) {
+        this.nextBirthMonth = nextBirthMonth;
     }
 
     public int getNextBirthDate() {
-        return isLunarBirth() ?
+        return nextBirthDate == 0 ? isLunarBirth() ?
                 getNextLunarBirthday()[NEXT_BIRTH_DATE] :
-                getNextSolarBirthday()[NEXT_BIRTH_DATE];
+                getNextSolarBirthday()[NEXT_BIRTH_DATE] : nextBirthDate;
+    }
+
+    public void setNextBirthDate(int nextBirthDate) {
+        this.nextBirthDate = nextBirthDate;
     }
 
     public boolean isLockScreen() {
@@ -317,7 +335,6 @@ public class BirthBean {
         return "BirthBean{" +
                 "name='" + name + '\'' +
                 ", birthday='" + birthday + '\'' +
-                ", imageStyle=" + imageStyle +
                 '}';
     }
 }
