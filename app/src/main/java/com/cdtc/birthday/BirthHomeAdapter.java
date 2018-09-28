@@ -47,6 +47,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
     private static final int fontColor[] = {
             Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
             Color.BLACK, Color.BLACK, Color.WHITE, Color.WHITE};
+    private int imageStyle;
 
     BirthHomeAdapter(Context context, List<BirthBean> birthDate) {
         this.context = context;
@@ -67,7 +68,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
     @Override
     public void onBindViewHolder(@NonNull BirthHomeViewHolder holder, int position) {
         BirthBean birthBean = birthBeanArrayList.get(position);
-        int imageStyle = (int) (Math.random() * fontColor.length);
+        imageStyle = (int) (Math.random() * fontColor.length);
 
         if (position == 0) {
             holder.setVisibility(false);
@@ -75,7 +76,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
             if (position % 5 == 0) {
                 holder.setVisibility(true);
             }
-            initTextView(holder, imageStyle);
+            initTextView(holder);
             initData(holder, birthBean);
             holder.HomePanelItemLayout.setBackgroundResource(backgroundImage[imageStyle]);
             holder.birthLayout.setBackgroundResource(foregroundImage[imageStyle]);
@@ -96,7 +97,6 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
      */
     @SuppressLint("SetTextI18n")
     private void initData(BirthHomeViewHolder holder, BirthBean birthBean) {
-        int imageStyle = (int) (Math.random() * fontColor.length);
         holder.birthCountDownText.setTextColor(fontColor[imageStyle]);
         holder.birthYearMonthText.setTextColor(fontColor[imageStyle]);
 
@@ -132,11 +132,10 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
 
     /**
      * [代码添加新TextView]
+     *  @param holder     View
      *
-     * @param holder     View
-     * @param imageStyle 文字颜色
      */
-    private void initTextView(BirthHomeViewHolder holder, int imageStyle) {
+    private void initTextView(BirthHomeViewHolder holder) {
         holder.birthWeekText = addTextView(imageStyle);
         holder.birthLunarYearText = addTextView(imageStyle);
         holder.birthLunarMonthDateText = addTextView(imageStyle);
