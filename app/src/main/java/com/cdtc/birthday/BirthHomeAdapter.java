@@ -165,6 +165,16 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
         notifyDataSetChanged();
     }
 
+    public void insertItem(BirthBean bean) {
+        // 当未添加生日记录时有一张无用卡片需删除
+        BirthBean birthBean = birthBeanArrayList.get(1);
+        if (birthBean.getName().equals("无记录")) {
+            birthBeanArrayList.remove(0);
+        }
+        birthBeanArrayList.add(bean);
+        notifyDataSetChanged();
+    }
+
     class BirthHomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView birthCountDownText, birthYearMonthText, birthDateText;

@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-    private static ArrayList<BirthBean> birthBeans;
     private BirthHomeAdapter birthHomeAdapter;
     private static int presentPosition;
 
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_home);
         showPanel(SHOW_HOME);
 
-        birthBeans = new ArrayList<>();
+        ArrayList<BirthBean> birthBeans = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
             birthBeans.add(new BirthBean("李刚", new BornDay(1999, 9, 23), false ,false,new int[]{0,0}));
             birthBeans.add(new BirthBean("东方红叶", new BornDay(2009, 9, 30), false,true,new int[]{0,0}));
@@ -340,18 +339,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertBirthCard(BirthBean bean) {
-        // 移除第一张空卡片
-        birthBeans.remove(0);
-
-        // 当未添加生日记录时有一张无用卡片需删除
-        BirthBean birthBean = birthBeans.get(0);
-        if (birthBean.getName().equals("无记录")) {
-            birthBeans.remove(0);
-        }
-
-        // 新增生日卡片
-        birthBeans.add(bean);
-        initBirthCard(birthBeans);
+        birthHomeAdapter.insertItem(bean);
     }
 }
 
