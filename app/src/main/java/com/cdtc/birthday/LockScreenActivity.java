@@ -168,9 +168,16 @@ public class LockScreenActivity extends AppCompatActivity implements View.OnTouc
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        LogUtil.d("LOCKACTIVITY","onStop()");
+        super.onStop();
+    }
 
+    @Override
+    protected void onDestroy() {
+        LogUtil.d("LOCKACTIVITY","onDestry()");
+        super.onDestroy();
+        finish();
     }
 
     @Override

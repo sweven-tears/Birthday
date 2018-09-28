@@ -21,6 +21,7 @@ public class LockScreenService extends Service {
         IntentFilter screenOffFilter=new IntentFilter();
         screenOffFilter.addAction(Intent.ACTION_SCREEN_ON);
         screenOffFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        screenOffFilter.addAction(Intent.ACTION_USER_PRESENT);
         registerReceiver(mGuardReceiver,screenOffFilter);
     }
 
@@ -34,6 +35,6 @@ public class LockScreenService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mGuardReceiver);
-        startService(new Intent(this,LockScreenService.class));
+//        startService(new Intent(this,LockScreenService.class));
     }
 }

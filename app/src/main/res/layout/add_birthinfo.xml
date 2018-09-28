@@ -77,7 +77,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
-            android:text="手机"
+            android:text="年龄"
             android:textColor="#C48550" />
 
         <ImageView
@@ -98,56 +98,23 @@
             android:background="@drawable/redline" />
 
         <EditText
-            android:id="@+id/add_birth_con"
-            android:layout_width="210dp"
+            android:id="@+id/add_birth_age"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@null"
-            android:hint="用于发送短信  "
+            android:hint="点击设置年龄"
             android:lines="1"
-            android:numeric="integer"
             android:singleLine="true"
             android:gravity="center_vertical"
             android:paddingRight="20dp"
             android:textSize="18sp"
             android:textStyle="normal"/>
 
-        <ImageView
-            android:id="@+id/add_brith_phone_tolianxiren"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="40dp"
-            android:background="@mipmap/ic_content"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/add_bg"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="悬浮窗倒计时"
-            android:textColor="#C48550" />
-
-        <Switch
-            android:id="@+id/float_window_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="220dp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/lock_screen_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -173,22 +140,38 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
-        android:background="@drawable/add_bg">
+        android:background="@drawable/add_bg" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:text="提醒时间"
+            android:textColor="#C48550" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline" />
 
         <TextView
             android:id="@+id/wake_time_text"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:alpha="1"
+            android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:text="提醒时间 | "
-            android:textColor="#C48550"/>
+            android:paddingRight="20dp"
+            android:background="@null"
+            android:hint="点击设置提醒时间 "
+            android:lines="1"
+            android:textSize="18sp" />
+
     </LinearLayout>
+
 </LinearLayout>

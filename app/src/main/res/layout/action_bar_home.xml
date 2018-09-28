@@ -5,15 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <TextView
+    <ImageView
+        android:id="@+id/actionbar_cancel"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="28sp"
         android:visibility="invisible"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/actionbar_title"
