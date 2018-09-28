@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.cdtc.birthday.data.BirthBean;
 import com.cdtc.birthday.data.BornDay;
+import com.cdtc.birthday.utils.ToastUtil;
 import com.cdtc.birthday.view.BirthDetailActivity;
 
 import java.util.Calendar;
@@ -197,23 +198,23 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.birth_layout) {
-                //TODO 打开信息详情页面
-                BirthBean bean=birthBeanArrayList.get(getAdapterPosition());
-                BornDay day=bean.getBirthday();
-                Intent intent=new Intent(context, BirthDetailActivity.class);
-                Bundle bundle=new Bundle();
+                BirthBean bean = birthBeanArrayList.get(getAdapterPosition());
+                if (!bean.getName().equals("无记录")) {
+                    BornDay day = bean.getBirthday();
+                    Intent intent = new Intent(context, BirthDetailActivity.class);
+                    Bundle bundle = new Bundle();
 
-                bundle.putString("name",bean.getName());
-                bundle.putIntArray("birthday",new int[]{day.year,day.month,day.date});
-                bundle.putIntArray("nextBirth",new int[]{bean.getNextBirthYear(),bean.getNextBirthMonth(),bean.getNextBirthDate()});
-                bundle.putInt("age",bean.getAge());
-                bundle.putBoolean("isLunarBirth",bean.isLunarBirth());
-                bundle.putBoolean("isLockScreen",bean.isLockScreen());
-                bundle.putIntArray("clockTime",bean.getTipTime());
+                    bundle.putString("name", bean.getName());
+                    bundle.putIntArray("birthday", new int[]{day.year, day.month, day.date});
+                    bundle.putIntArray("nextBirth", new int[]{bean.getNextBirthYear(), bean.getNextBirthMonth(), bean.getNextBirthDate()});
+                    bundle.putInt("age", bean.getAge());
+                    bundle.putBoolean("isLunarBirth", bean.isLunarBirth());
+                    bundle.putBoolean("isLockScreen", bean.isLockScreen());
+                    bundle.putIntArray("clockTime", bean.getTipTime());
 
-                intent.putExtra("allMessage",bundle);
-                context.startActivity(intent);
-                Toast.makeText(context, "打开详情页", Toast.LENGTH_SHORT).show();
+                    intent.putExtra("allMessage", bundle);
+                    context.startActivity(intent);
+                }
             }
         }
 

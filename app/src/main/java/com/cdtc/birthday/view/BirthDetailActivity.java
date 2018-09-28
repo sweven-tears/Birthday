@@ -90,7 +90,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
     private void initData() {
         actionBarTitle.setText("生日详情");
         actionBarEdit.setText("编辑");
-        actionBarEdit.setTextSize(20);
+        actionBarEdit.setTextSize(16);
         actionBarEdit.setVisibility(View.VISIBLE);
 
         Intent intent = getIntent();
@@ -142,26 +142,19 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
                 setWakeTime(clockTime);
             }
         });
-
-        birthDetailTextViewClockTime.setOnFocusChangeListener((view, b) -> {
-            String str = birthDetailTextViewClockTime.getText().toString();
-            int hour = Integer.parseInt(str.split(":")[0]);
-            int minute = Integer.parseInt(str.split(":")[1]);
-            clockTime = new int[]{hour, minute};
-        });
     }
 
     /**
      * 设置提醒时间
      */
-    private void setWakeTime(int[] clockTime) {
+    private void setWakeTime(int[] clock) {
         int hour;
         int minute;
         Calendar currentSetTime = Calendar.getInstance();
 
-        if (clockTime != null) {
-            hour = clockTime[0];
-            minute = clockTime[1];
+        if (clock != null) {
+            hour = clock[0];
+            minute = clock[1];
         } else {
             hour = currentSetTime.get(Calendar.HOUR_OF_DAY);
             minute = currentSetTime.get(Calendar.MINUTE);
@@ -175,6 +168,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
                     } else {
                         birthDetailTextViewClockTime.setText(hourOfDay + ":" + minuteOfDay);
                     }
+                    clockTime = new int[]{hourOfDay, minuteOfDay};
                 }, hour, minute, false);
         timePickerDialog.show();
     }
