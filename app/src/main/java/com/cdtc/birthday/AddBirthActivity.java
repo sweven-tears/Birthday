@@ -42,6 +42,8 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
     private TextView birthAge;
     private LinearLayout lsLayout;
     private Switch lockScreen;
+    private LinearLayout fcLayout;
+    private Switch farmCalendar;
     private TextView wakeUpText;
     private TextView ensure;
     private ImageView cancel;
@@ -70,6 +72,10 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
         lsLayout.setOnClickListener(this);
         lockScreen = findViewById(R.id.lock_screen_switch);
         lockScreen.setOnCheckedChangeListener(this);
+        fcLayout=findViewById(R.id.farm_calendar_layout);
+        fcLayout.setOnClickListener(this);
+        farmCalendar=findViewById(R.id.farm_calendar_switch);
+        farmCalendar.setOnClickListener(this);
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -193,7 +199,7 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        stopService(new Intent(this, LockScreenService.class));
+        stopService(new Intent(this, LockScreenService.class));
     }
 
     @Override
@@ -206,6 +212,13 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
                     lockScreen.setChecked(true);
                 }
                 break;
+            case R.id.farm_calendar_layout:
+                if (farmCalendar.isChecked()) {
+                    farmCalendar.setChecked(false);
+                } else {
+                    farmCalendar.setChecked(true);
+                }
+                break;
             case R.id.action_bar_add:
                 new AlertDialog.Builder(AddBirthActivity.this)
                         .setMessage("确定保存吗?")
@@ -216,32 +229,31 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
                                 Intent intent = new Intent(AddBirthActivity.this, MainActivity.class);
                                 if (!TextUtils.isEmpty(birthRel.getText())) {
                                     intent.putExtra("name", birthRel.getText().toString());
+                                    if (!TextUtils.isEmpty(addBirthBirth.getText())) {
+                                        intent.putExtra("nextBirth", birth);
+                                        if (!TextUtils.isEmpty(birthAge.getText())) {
+                                            intent.putExtra("age", Integer.valueOf(birthAge.getText().toString()));
+                                            if (!TextUtils.isEmpty(wakeUpText.getText())) {
+                                                intent.putExtra("lockTime", wake);if (lockScreen.isChecked()) {
+                                                    intent.putExtra("isLockScreen", true);
+                                                } else {
+                                                    intent.putExtra("isLockScreen", false);
+                                                }
+                                                setResult(RESULT, intent);
+//                                                cleanInfo();
+                                                finish();
+                                            } else {
+                                                ToastUtil.showShort(AddBirthActivity.this, "请填写提醒时间");
+                                            }
+                                        } else {
+                                            ToastUtil.showShort(AddBirthActivity.this, "请填写年龄");
+                                        }
+                                    } else {
+                                        ToastUtil.showShort(AddBirthActivity.this, "请填写出生日期");
+                                    }
                                 } else {
                                     ToastUtil.showShort(AddBirthActivity.this, "请填写昵称");
                                 }
-                                if (!TextUtils.isEmpty(addBirthBirth.getText())) {
-                                    intent.putExtra("nextBirth", birth);
-                                } else {
-                                    ToastUtil.showShort(AddBirthActivity.this, "请填写出生日期");
-                                }
-                                if (!TextUtils.isEmpty(birthAge.getText())) {
-                                    intent.putExtra("age", Integer.valueOf(birthAge.getText().toString()));
-                                } else {
-                                    ToastUtil.showShort(AddBirthActivity.this, "请填写年龄");
-                                }
-                                if (lockScreen.isChecked()) {
-                                    intent.putExtra("isLockScreen", true);
-                                } else {
-                                    intent.putExtra("isLockScreen", false);
-                                }
-                                if (!TextUtils.isEmpty(wakeUpText.getText())) {
-                                    intent.putExtra("lockTime", wake);
-                                } else {
-                                    ToastUtil.showShort(AddBirthActivity.this, "请填写提醒时间");
-                                }
-                                setResult(RESULT, intent);
-                                finish();
-                                cleanInfo();
                             }
                         })
                         .show();
