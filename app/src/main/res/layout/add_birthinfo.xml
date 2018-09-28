@@ -6,50 +6,39 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/add_bg"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_marginTop="5dp"
+        android:background="@drawable/add_bg">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
-            android:text="姓名"
-            android:textColor="#C48550"/>
+            android:text="昵称"
+            android:textColor="#C48550" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/redline"/>
+            android:background="@drawable/redline" />
 
         <EditText
-            android:id="@+id/add_birth_name"
-            android:layout_width="210dp"
+            android:id="@+id/add_birth_rel"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:hint="该怎么称呼ta呢"
+            android:lines="1"
+            android:singleLine="true"
             android:gravity="center_vertical"
             android:paddingRight="20dp"
-            android:background="@null"
-            android:hint="请输入姓名     "
-            android:lines="1"
-            android:textSize="18sp"/>
-
-        <ImageView
-            android:id="@+id/add_brith_name_tolianxiren"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="40dp"
-            android:background="@mipmap/ic_content"
-            />
+            android:textSize="18sp"
+            android:textStyle="normal"/>
     </LinearLayout>
 
     <LinearLayout
@@ -129,43 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="40dp"
-            android:background="@mipmap/ic_info"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/add_bg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="关系"
-            android:textColor="#C48550" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/redline" />
-
-        <EditText
-            android:id="@+id/add_birth_rel"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@null"
-            android:hint="描述你们的关系"
-            android:lines="1"
-            android:singleLine="true"
-            android:gravity="center_vertical"
-            android:paddingRight="20dp"
-            android:textSize="18sp"
-            android:textStyle="normal"/>
+            android:background="@mipmap/ic_content"/>
     </LinearLayout>
 
     <LinearLayout
@@ -181,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
-            android:text="悬浮窗"
+            android:text="悬浮窗倒计时"
             android:textColor="#C48550" />
 
         <Switch
@@ -207,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
-            android:text="锁屏"
+            android:text="锁屏倒计时"
             android:textColor="#C48550" />
 
         <Switch

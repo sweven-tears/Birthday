@@ -20,21 +20,22 @@ import android.widget.TextView;
 import com.cdtc.birthday.utils.LogUtil;
 
 public class LockScreenActivity extends AppCompatActivity implements View.OnTouchListener {
+    public static LockScreenActivity sLockScreenActivity;
 
     private float mStartX, mWidth;
     private LinearLayout mLinearLayout;
     private RelativeLayout mRelativeLayout;
     private TextView timeView, timeWeekView, timeYYMMDDView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_screen);
         hideBottomUIMenu();
+        sLockScreenActivity=this;
 
         init();
-        TimeThread timeThread=new TimeThread(timeView,timeWeekView,timeYYMMDDView);
+        TimeThread timeThread = new TimeThread(timeView, timeWeekView, timeYYMMDDView);
         timeThread.start();
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
@@ -54,9 +55,9 @@ public class LockScreenActivity extends AppCompatActivity implements View.OnTouc
         mLinearLayout = findViewById(R.id.slip_layout);
 //        mLinearLayout.setOnTouchListener(this);
         mRelativeLayout = findViewById(R.id.lock_activity_layout);
-        timeView=findViewById(R.id.time_textView);
-        timeWeekView=findViewById(R.id.time_week_view);
-        timeYYMMDDView=findViewById(R.id.time_year_month_day_view);
+        timeView = findViewById(R.id.time_textView);
+        timeWeekView = findViewById(R.id.time_week_view);
+        timeYYMMDDView = findViewById(R.id.time_year_month_day_view);
 
     }
 
