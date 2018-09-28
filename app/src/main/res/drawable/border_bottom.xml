@@ -9,21 +9,11 @@
 
     <item
         android:bottom="1dp"
-        android:right="1dp"
-        android:left="1dp"
-        android:top="1dp">
+        android:right="0dp"
+        android:left="0dp"
+        android:top="0dp">
         <shape>
             <solid android:color="@color/white"/>
-        </shape>
-    </item>
-
-    <item
-        android:bottom="600dp"
-        android:right="340dp"
-        android:top="1dp"
-        android:left="1dp">
-        <shape android:shape="oval">
-            <solid android:color="@color/violet"/>
         </shape>
     </item>
 </layer-list>

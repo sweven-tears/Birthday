@@ -1,6 +1,5 @@
 package com.cdtc.birthday.data;
 
-import com.cdtc.birthday.BornDay;
 import com.cdtc.birthday.DealHomeBirthDate;
 import com.cdtc.birthday.LunarSolarConverter;
 
@@ -10,7 +9,7 @@ import java.util.Calendar;
  * Created by Sweven on 2018/9/23.
  * Email:sweventears@Foxmail.com
  * <p>
- * 生日主的相关信息
+ * 生日主的相关信息及设置
  */
 public class BirthBean {
 
@@ -54,6 +53,16 @@ public class BirthBean {
      * 下一次生日公历号数
      */
     private int nextBirthDate;
+
+    /**
+     * 是否在锁屏界面显示
+     */
+    private boolean isLockScreen;
+
+    /**
+     * 当天具体提醒时间，二维数组 {12,12} -> {小时,分钟}
+     */
+    private int tipTime[];
 
     /**
      * 生日主卡片样式编号
@@ -138,42 +147,19 @@ public class BirthBean {
         int nextMonth = getNextBirthMonth();
         int nextDate = getNextBirthDate();
 
-//        Calendar now = Calendar.getInstance();
-//        if (name.equals("无记录")) {
-//            tipText = "您还未添加\n生日记录";
-//        } else {
-//            if (nextYear >= now.get(Calendar.YEAR)+2) {
-//                int remainTime = DealHomeBirthDate.getBetweenDays(nextYear, nextMonth, nextDate);
-//                tipText = name + "\n离出生还有\n" + remainTime + "天\no(ﾟДﾟ)っ！";
-//            } else {
-//                nextYear = now.get(Calendar.YEAR);
-//                if (nextMonth < now.get(Calendar.MONTH) + 1) {
-//                    nextYear = nextYear + 1;
-//                } else if (nextMonth == now.get(Calendar.MONTH) + 1) {
-//                    if (nextDate < now.get(Calendar.DATE)) {
-//                        nextYear = nextYear + 1;
-//                    }
-//                }
-//                int remainTime = DealHomeBirthDate.getBetweenDays(nextYear, nextMonth, nextDate);
-//                if (remainTime != 0) {
-//                    tipText = name + "\n" + getAge() + "岁生日\n倒计时:\n" + remainTime + "天";
-//                } else {
-//                    tipText = name + "\n" + getAge() + "岁生日\n就是今天!";
-//                }
-//            }
-//        }
         if (getName().equals("无记录")) {
             tipText = "您还未添加\\n生日记录";
         } else {
-            if (getAge()<0){
+            if (getAge() < 0) {
                 int remainTime = DealHomeBirthDate.getBetweenDays(nextYear, nextMonth, nextDate);
                 tipText = name + "\n离出生还有\n" + remainTime + "天\no(ﾟДﾟ)っ！";
-            }
-            int remainTime = DealHomeBirthDate.getBetweenDays(nextYear, nextMonth, nextDate);
-            if (remainTime != 0) {
-                tipText = name + "\n" + getAge() + "岁生日\n倒计时:\n" + remainTime + "天";
             } else {
-                tipText = name + "\n" + getAge() + "岁生日\n就是今天!";
+                int remainTime = DealHomeBirthDate.getBetweenDays(nextYear, nextMonth, nextDate);
+                if (remainTime != 0) {
+                    tipText = name + "\n" + getAge() + "岁生日\n倒计时:\n" + remainTime + "天";
+                } else {
+                    tipText = name + "\n" + getAge() + "岁生日\n就是今天!";
+                }
             }
         }
         return tipText;
@@ -205,9 +191,24 @@ public class BirthBean {
                 getNextSolarBirthday()[NEXT_BIRTH_DATE];
     }
 
+    public boolean isLockScreen() {
+        return isLockScreen;
+    }
+
+    public void setLockScreen(boolean lockScreen) {
+        isLockScreen = lockScreen;
+    }
 
     public int getImageStyle() {
         return imageStyle;
+    }
+
+    public int[] getTipTime() {
+        return tipTime;
+    }
+
+    public void setTipTime(int[] tipTime) {
+        this.tipTime = tipTime;
     }
 
     public void setImageStyle(int imageStyle) {

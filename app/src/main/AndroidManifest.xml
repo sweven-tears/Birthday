@@ -4,7 +4,7 @@
     package="com.cdtc.birthday">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -55,13 +55,6 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".deskalert.DeskAlertService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="1.0"
-            tools:ignore="InnerclassSeparator" />
-
         <activity android:name=".view.LoginActivity">
         </activity>
         <activity android:name=".RegisterActivity">
@@ -74,8 +67,9 @@
         <service
             android:name=".LockScreenService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
+
+        <activity android:name=".view.BirthDetailActivity"/>
     </application>
 
 </manifest>

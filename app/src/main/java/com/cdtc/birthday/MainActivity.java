@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -26,8 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cdtc.birthday.data.BirthBean;
+import com.cdtc.birthday.data.BornDay;
 import com.cdtc.birthday.utils.LogUtil;
 import com.cdtc.birthday.utils.ToastUtil;
+import com.cdtc.birthday.view.BirthDetailActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -277,6 +280,16 @@ public class MainActivity extends AppCompatActivity {
         LogUtil.d("Main", "MainActivity:onDestroy()");
         stopService(new Intent(this, LongRunningService.class));
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == AddBirthActivity.REQUEST && resultCode == AddBirthActivity.RESULT) {
+//
+//        } else if (requestCode == BirthDetailActivity.REQUEST && resultCode == BirthDetailActivity.RESULT) {
+//
+//        }
     }
 }
 
