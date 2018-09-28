@@ -133,14 +133,14 @@ public class MainActivity extends AppCompatActivity {
 
         List<BirthBean> birthBeans = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            birthBeans.add(new BirthBean("李刚", "1999-9-23", 1));
-            birthBeans.add(new BirthBean("东方红叶", "2003-10-12", 4));
-            birthBeans.add(new BirthBean("钟晓珊", "1998-10-12", 0));
-            birthBeans.add(new BirthBean("Peter", "1998-2-17", 2));
-            birthBeans.add(new BirthBean("Mr.Li", "2013-3-15", 6));
-            birthBeans.add(new BirthBean("Sweven Tears", "2005-7-21", 5));
-            birthBeans.add(new BirthBean("小落", "1997-9-15", 3));
-            birthBeans.add(new BirthBean("小乔", "2026-2-16", 7));
+            birthBeans.add(new BirthBean("李刚", new BornDay(1999,9,23),false, 1));
+            birthBeans.add(new BirthBean("东方红叶", new BornDay(2009,9,30),false, 4));
+            birthBeans.add(new BirthBean("钟晓珊", new BornDay(2001,10,3), false,0));
+            birthBeans.add(new BirthBean("Peter", new BornDay(2010,11,23), false,2));
+            birthBeans.add(new BirthBean("Mr.Li", new BornDay(2004,12,23), true,6));
+            birthBeans.add(new BirthBean("Sweven Tears", new BornDay(2008,1,23), true,5));
+            birthBeans.add(new BirthBean("小落", new BornDay(2015,3,23), true,3));
+            birthBeans.add(new BirthBean("小乔", new BornDay(2022,6,23), false,7));
         }
 
 //        Calendar cal=Calendar.getInstance();

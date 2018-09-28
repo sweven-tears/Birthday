@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Sweven on 2018/9/25.
  * Email:sweventears@Foxmail.com
  */
-public class Birthday {
+public class BirthdayLocal {
 
     /**
      * 用户手机号
