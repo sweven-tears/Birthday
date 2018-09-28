@@ -38,15 +38,17 @@ public class BornDay {
      * @param month 设置的生日月份
      * @param date  设置的生日号数
      * @param age   设置的年龄
-     * @return 农历生日对应出生日期
+     * @return 农历生日对应出生的阳历日期
      */
     public static BornDay getLunarBornDay(int year, int month, int date, int age) {
-        LunarSolarConverter.Solar solar=new LunarSolarConverter.Solar();
-        solar.solarYear=year;
-        solar.solarMonth=month;
-        solar.solarDay=date;
-        LunarSolarConverter.Lunar lunar=LunarSolarConverter.SolarToLunar(solar);
-        return new BornDay(lunar.lunarYear - age, lunar.lunarMonth, lunar.lunarDay);
+        LunarSolarConverter.Solar nowSolar = new LunarSolarConverter.Solar();
+        nowSolar.solarYear = year;
+        nowSolar.solarMonth = month;
+        nowSolar.solarDay = date;
+        LunarSolarConverter.Lunar lunar = LunarSolarConverter.SolarToLunar(nowSolar);
+        lunar.lunarYear=lunar.lunarYear-age;
+        LunarSolarConverter.Solar bornSolar=LunarSolarConverter.LunarToSolar(lunar);
+        return new BornDay(bornSolar.solarYear, bornSolar.solarMonth, bornSolar.solarDay);
     }
 
     @Override

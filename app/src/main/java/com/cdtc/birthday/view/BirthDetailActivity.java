@@ -13,17 +13,14 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.cdtc.birthday.AddBirthActivity;
 import com.cdtc.birthday.MainActivity;
 import com.cdtc.birthday.R;
 import com.cdtc.birthday.data.BornDay;
-import com.cdtc.birthday.utils.LogUtil;
 import com.cdtc.birthday.utils.ToastUtil;
 
 import java.util.Calendar;
@@ -42,6 +39,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
 
     private TextView actionBarTitle;
     private TextView actionBarEdit;
+    private ImageView actionBarCancel;
 
     private boolean editState;
 
@@ -87,6 +85,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
     private void initId() {
         actionBarTitle = findViewById(R.id.actionbar_title);
         actionBarEdit = findViewById(R.id.action_bar_add);
+        actionBarCancel = findViewById(R.id.actionbar_cancel);
 
         birthDetailEditTextName = findViewById(R.id.birth_detail_edit_text_name);
         birthDetailTextViewBirthday = findViewById(R.id.birth_detail_text_view_birthday);
@@ -106,6 +105,8 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
         actionBarEdit.setText("编辑");
         actionBarEdit.setTextSize(16);
         actionBarEdit.setVisibility(View.VISIBLE);
+        actionBarCancel.setImageResource(R.drawable.ic_chevron_left_black_24dp);
+        actionBarCancel.setVisibility(View.VISIBLE);
 
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
@@ -156,8 +157,11 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
             }
         });
 
+        actionBarCancel
+                .setOnClickListener(view -> sureExit());
+
         birthDetailTextViewClockTime
-                .setOnClickListener(view -> setWakeTime(clockTime));
+                .setOnClickListener(view -> setClockTime(clockTime));
 
         birthDetailTextViewNextBirthday
                 .setOnClickListener(view -> setNextBirth(nextBirth));
@@ -169,25 +173,41 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
                 .setOnCheckedChangeListener((btn, b) -> isLockScreen = b);
     }
 
+    @SuppressLint("SetTextI18n")
     private void saveData() {
-        name = birthDetailEditTextName.getText().toString();
-        age = Integer.parseInt(birthDetailEditTextAge.getText().toString());
+        String name = birthDetailEditTextName.getText().toString();
+        if (name.equals("")) {
+            birthDetailEditTextName.setText(this.name);
+        } else {
+            this.name = name;
+        }
+        String age = birthDetailEditTextAge.getText().toString();
+        if (age.equals("")) {
+            birthDetailEditTextAge.setText(String.valueOf(this.age));
+        } else {
+            this.age = Integer.parseInt(age);
+        }
         BornDay born;
         if (isLunarBirth) {
-            born = BornDay.getLunarBornDay(nextBirth[0], nextBirth[1], nextBirth[2], age);
+            born = BornDay.getLunarBornDay(nextBirth[0], nextBirth[1], nextBirth[2], this.age);
         } else {
-            born = BornDay.getSolarBornDay(nextBirth[0], nextBirth[1], nextBirth[2], age);
+            born = BornDay.getSolarBornDay(nextBirth[0], nextBirth[1], nextBirth[2], this.age);
         }
+        birthDetailTextViewBirthday.setText(born.year + "年" + born.month + "月" + born.date + "日");
         birthday = new int[]{born.year, born.month, born.date};
 
-        backData=new Bundle();
-        backData.putString("name", name);
+        backData = new Bundle();
+        backData.putString("name", this.name);
         backData.putIntArray("birthday", birthday);
         backData.putIntArray("nextBirth", nextBirth);
-        backData.putInt("age", age);
+        backData.putInt("age", this.age);
         backData.putBoolean("isLunarBirth", isLunarBirth);
         backData.putBoolean("isLockScreen", isLockScreen);
         backData.putIntArray("clockTime", clockTime);
+
+        Intent intent = new Intent(BirthDetailActivity.this, MainActivity.class);
+        intent.putExtra("allMessage", backData);
+        setResult(RESULT, intent);
     }
 
     /**
@@ -205,7 +225,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
                     int month1 = monthOfYear + 1;
                     birthDetailTextViewNextBirthday.setText(year1 + "年" + month1 + "月" + dayOfMonth + "日");
                     nextBirth = new int[]{year1, month1, dayOfMonth};
-                }, year, month, date);
+                }, year, month - 1, date);
         dialog.show();
     }
 
@@ -214,7 +234,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
      *
      * @param clock time
      */
-    private void setWakeTime(int[] clock) {
+    private void setClockTime(int[] clock) {
         int hour;
         int minute;
         Calendar currentSetTime = Calendar.getInstance();
@@ -281,19 +301,20 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (isEditState()) {
-                showTips();
-            } else {
-                Intent intent=new Intent(BirthDetailActivity.this, MainActivity.class);
-                intent.putExtra("allMessage",backData);
-                setResult(RESULT,intent);
-                finish();
-            }
+            sureExit();
         }
         return super.onKeyDown(keyCode, event);
     }
 
+    private void sureExit() {
+        if (isEditState()) {
+            showTips();
+        } else {
+            finish();
+        }
+    }
+
     private void showTips() {
-        ToastUtil.showShort(this, "提示是否保存");
+        ToastUtil.showShort(this, "提示是否放弃编辑？");
     }
 }

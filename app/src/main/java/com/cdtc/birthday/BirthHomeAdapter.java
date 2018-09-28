@@ -3,7 +3,6 @@ package com.cdtc.birthday;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +21,10 @@ import com.cdtc.birthday.view.BirthDetailActivity;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.cdtc.birthday.data.CardStyle.backgroundImage;
+import static com.cdtc.birthday.data.CardStyle.fontColor;
+import static com.cdtc.birthday.data.CardStyle.foregroundImage;
+
 /**
  * Created by Sweven on 2018/9/23.
  * Email:sweventears@Foxmail.com
@@ -32,21 +35,6 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
     private LayoutInflater inflater;
     private Context context;
 
-    private static final int backgroundImage[] = {
-            R.drawable.home_background_01, R.drawable.home_background_02,
-            R.drawable.home_background_03, R.drawable.home_background_04,
-            R.drawable.home_background_05, R.drawable.home_background_06,
-            R.drawable.home_background_07, R.drawable.home_background_08};
-
-    private static final int foregroundImage[] = {
-            R.drawable.home_foreground_01, R.drawable.home_foreground_02,
-            R.drawable.home_foreground_03, R.drawable.home_foreground_04,
-            R.drawable.home_foreground_05, R.drawable.home_foreground_06,
-            R.drawable.home_foreground_07, R.drawable.home_foreground_08};
-
-    private static final int fontColor[] = {
-            Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
-            Color.BLACK, Color.BLACK, Color.WHITE, Color.WHITE};
     private int imageStyle;
 
     BirthHomeAdapter(Context context, List<BirthBean> birthDate) {
@@ -84,9 +72,45 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
 
     }
 
-    @Override
-    public int getItemCount() {
-        return birthBeanArrayList.size();
+    /**
+     * [代码添加新TextView]
+     *
+     * @param holder View
+     */
+    private void initTextView(BirthHomeViewHolder holder) {
+        holder.birthWeekText = addTextView(imageStyle);
+        holder.birthLunarYearText = addTextView(imageStyle);
+        holder.birthLunarMonthDateText = addTextView(imageStyle);
+        holder.birthConstellationText = addTextView(imageStyle);
+
+        holder.birthWeekText.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
+
+        holder.birthLayout.removeAllViews();
+        holder.birthLayout.addView(holder.birthYearMonthText);
+        holder.birthLayout.addView(holder.birthDateText);
+        holder.birthLayout.addView(holder.birthWeekText);
+        holder.birthLayout.addView(holder.birthLunarYearText);
+        holder.birthLayout.addView(holder.birthLunarMonthDateText);
+        holder.birthLayout.addView(holder.birthConstellationText);
+
+    }
+
+    /**
+     * [新建TextView]
+     *
+     * @param imageStyle 文字颜色
+     * @return .
+     */
+    private TextView addTextView(int imageStyle) {
+        TextView textView = new TextView(context);
+        textView.setTextColor(fontColor[imageStyle]);
+        textView.setTextSize(18);
+        textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.CENTER;
+        textView.setLayoutParams(lp);
+
+        return textView;
     }
 
     /**
@@ -130,45 +154,25 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
 
     }
 
-    /**
-     * [代码添加新TextView]
-     *  @param holder     View
-     *
-     */
-    private void initTextView(BirthHomeViewHolder holder) {
-        holder.birthWeekText = addTextView(imageStyle);
-        holder.birthLunarYearText = addTextView(imageStyle);
-        holder.birthLunarMonthDateText = addTextView(imageStyle);
-        holder.birthConstellationText = addTextView(imageStyle);
-
-        holder.birthWeekText.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
-
-        holder.birthLayout.removeAllViews();
-        holder.birthLayout.addView(holder.birthYearMonthText);
-        holder.birthLayout.addView(holder.birthDateText);
-        holder.birthLayout.addView(holder.birthWeekText);
-        holder.birthLayout.addView(holder.birthLunarYearText);
-        holder.birthLayout.addView(holder.birthLunarMonthDateText);
-        holder.birthLayout.addView(holder.birthConstellationText);
-
+    @Override
+    public int getItemCount() {
+        return birthBeanArrayList.size();
     }
 
-    /**
-     * [新建TextView]
-     *
-     * @param imageStyle 文字颜色
-     * @return .
-     */
-    private TextView addTextView(int imageStyle) {
-        TextView textView = new TextView(context);
-        textView.setTextColor(fontColor[imageStyle]);
-        textView.setTextSize(18);
-        textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
-        textView.setLayoutParams(lp);
+    public void updateItem(BirthBean bean, int presentPosition) {
+        birthBeanArrayList.remove(presentPosition);
+        birthBeanArrayList.add(presentPosition,bean);
+        notifyDataSetChanged();
+    }
 
-        return textView;
+    public void insertItem(BirthBean bean) {
+        // 当未添加生日记录时有一张无用卡片需删除
+        BirthBean birthBean = birthBeanArrayList.get(1);
+        if (birthBean.getName().equals("无记录")) {
+            birthBeanArrayList.remove(0);
+        }
+        birthBeanArrayList.add(bean);
+        notifyDataSetChanged();
     }
 
     class BirthHomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -210,7 +214,9 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
                     bundle.putIntArray("clockTime", bean.getClockTime());
 
                     intent.putExtra("allMessage", bundle);
-                    context.startActivity(intent);
+                    if (birthCardListener !=null){
+                        birthCardListener.onBirthCardClick(intent,getAdapterPosition());
+                    }
                 }
             }
         }
@@ -233,5 +239,15 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
             }
             itemView.setLayoutParams(param);
         }
+    }
+
+    interface BirthCardListener {
+        void onBirthCardClick(Intent intent,int position);
+    }
+
+    private BirthCardListener birthCardListener;
+
+    public void setBirthCardListener(BirthCardListener onBirthCardListener){
+        this.birthCardListener =onBirthCardListener;
     }
 }
