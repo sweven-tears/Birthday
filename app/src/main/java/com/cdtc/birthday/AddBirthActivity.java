@@ -34,8 +34,8 @@ import java.util.Calendar;
 public class AddBirthActivity extends AppCompatActivity implements View.OnClickListener,
         View.OnTouchListener,
         CompoundButton.OnCheckedChangeListener {
-    private static final int RESULT = 200;
-    private static final int REQUESt = 201;
+    public static final int RESULT = 200;
+    public static final int REQUEST = 201;
 
     private TextView addBirthBirth;
     private TextView birthRel;
@@ -215,31 +215,32 @@ public class AddBirthActivity extends AppCompatActivity implements View.OnClickL
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(AddBirthActivity.this, MainActivity.class);
                                 if (!TextUtils.isEmpty(birthRel.getText())) {
-                                    intent.putExtra("nickName", birthRel.getText().toString());
+                                    intent.putExtra("name", birthRel.getText().toString());
                                 } else {
                                     ToastUtil.showShort(AddBirthActivity.this, "请填写昵称");
                                 }
                                 if (!TextUtils.isEmpty(addBirthBirth.getText())) {
-                                    intent.putExtra("birth_time", birth);
+                                    intent.putExtra("nextBirth", birth);
                                 } else {
                                     ToastUtil.showShort(AddBirthActivity.this, "请填写出生日期");
                                 }
                                 if (!TextUtils.isEmpty(birthAge.getText())) {
-                                    intent.putExtra("birth_age", Integer.valueOf(birthAge.getText().toString()));
+                                    intent.putExtra("age", Integer.valueOf(birthAge.getText().toString()));
                                 } else {
                                     ToastUtil.showShort(AddBirthActivity.this, "请填写年龄");
                                 }
                                 if (lockScreen.isChecked()) {
-                                    intent.putExtra("lock_screen", true);
+                                    intent.putExtra("isLockScreen", true);
                                 } else {
-                                    intent.putExtra("lock_screen", false);
+                                    intent.putExtra("isLockScreen", false);
                                 }
                                 if (!TextUtils.isEmpty(wakeUpText.getText())) {
-                                    intent.putExtra("wake_up_time", wake);
+                                    intent.putExtra("lockTime", wake);
                                 } else {
                                     ToastUtil.showShort(AddBirthActivity.this, "请填写提醒时间");
                                 }
                                 setResult(RESULT, intent);
+                                finish();
                                 cleanInfo();
                             }
                         })

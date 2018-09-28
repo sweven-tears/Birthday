@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:visibility="invisible"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="ContentDescription,HardcodedText" />
 
     <TextView
         android:id="@+id/actionbar_title"

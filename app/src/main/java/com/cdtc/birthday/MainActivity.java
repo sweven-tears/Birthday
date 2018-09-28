@@ -34,6 +34,7 @@ import com.cdtc.birthday.view.BirthDetailActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+    private static ArrayList<BirthBean> birthBeans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,37 +136,45 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_home);
         showPanel(SHOW_HOME);
 
-        List<BirthBean> birthBeans = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            birthBeans.add(new BirthBean("李刚", new BornDay(1999,9,23),false, 1));
-            birthBeans.add(new BirthBean("东方红叶", new BornDay(2009,9,30),false, 4));
-            birthBeans.add(new BirthBean("钟晓珊", new BornDay(2001,10,3), false,0));
-            birthBeans.add(new BirthBean("Peter", new BornDay(2010,11,23), false,2));
-            birthBeans.add(new BirthBean("Mr.Li", new BornDay(2004,12,23), true,6));
-            birthBeans.add(new BirthBean("Sweven Tears", new BornDay(2008,1,23), true,5));
-            birthBeans.add(new BirthBean("小落", new BornDay(2015,3,23), true,3));
-            birthBeans.add(new BirthBean("小乔", new BornDay(2022,6,23), false,7));
+        birthBeans = new ArrayList<>();
+        for (int i = 0; i < 0; i++) {
+            birthBeans.add(new BirthBean("李刚", new BornDay(1999, 9, 23), false, 1));
+            birthBeans.add(new BirthBean("东方红叶", new BornDay(2009, 9, 30), false, 4));
+            birthBeans.add(new BirthBean("钟晓珊", new BornDay(2001, 10, 3), false, 0));
+            birthBeans.add(new BirthBean("Peter", new BornDay(2010, 11, 23), false, 2));
+            birthBeans.add(new BirthBean("Mr.Li", new BornDay(2004, 12, 23), true, 6));
+            birthBeans.add(new BirthBean("Sweven Tears", new BornDay(2008, 1, 23), true, 5));
+            birthBeans.add(new BirthBean("小落", new BornDay(2015, 3, 23), true, 3));
+            birthBeans.add(new BirthBean("小乔", new BornDay(2022, 6, 23), false, 7));
         }
-
-//        Calendar cal=Calendar.getInstance();
-//        String today=cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.DATE);
-//        birthBeans.add(new BirthBean("无记录", today,0));
 
         layoutManager = new LinearLayoutManager(MainActivity.this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        layoutManager.scrollToPositionWithOffset(1, 0);
         birthHomeRecycler.setLayoutManager(layoutManager);
         new PagerSnapHelper().attachToRecyclerView(birthHomeRecycler);
         birthHomeRecycler.addItemDecoration(new SpaceItemDecoration(70));
 
-        BirthHomeAdapter birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthBeans);
-        birthHomeRecycler.setAdapter(birthHomeAdapter);
+        initBirthCard(birthBeans);
 
         // 设置标注日期
         List<Date> markDates = new ArrayList<>();
         markDates.add(new Date());
         customCalendarView.setMarkDates(markDates);
 
+    }
+
+    /**
+     * 初始化生日卡片
+     */
+    private void initBirthCard(List<BirthBean> birthBean) {
+        if (birthBean.size() < 1) {
+            Calendar cal = Calendar.getInstance();
+            BornDay now = new BornDay(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH) + 1), cal.get(Calendar.DATE));
+            birthBean.add(new BirthBean("无记录", now, 0));
+        }
+        layoutManager.scrollToPositionWithOffset(1, 0);
+        BirthHomeAdapter birthHomeAdapter = new BirthHomeAdapter(MainActivity.this, birthBean);
+        birthHomeRecycler.setAdapter(birthHomeAdapter);
     }
 
     /**
@@ -186,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             actionBarAdd.setVisibility(View.INVISIBLE);
         } else if (show == SHOW_MINE) {
             panelMine.setVisibility(View.VISIBLE);
-            actionBarTitle.setText("设置");
+            actionBarTitle.setText("我的");
             actionBarAdd.setVisibility(View.INVISIBLE);
         }
     }
@@ -206,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         // home页面右上角添加生日信息监听
         actionBarAdd.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AddBirthActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, AddBirthActivity.REQUEST);
         });
 
         // home页面右上角图标的变化
@@ -285,11 +295,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == AddBirthActivity.REQUEST && resultCode == AddBirthActivity.RESULT) {
-//
-//        } else if (requestCode == BirthDetailActivity.REQUEST && resultCode == BirthDetailActivity.RESULT) {
-//
-//        }
+        if (requestCode == AddBirthActivity.REQUEST && resultCode == AddBirthActivity.RESULT) {
+            assert data != null;
+            String name = data.getStringExtra("name");
+            int[] nextBirth = data.getIntArrayExtra("nextBirth");
+            int age = data.getIntExtra("age", 0);
+            boolean isLockScreen = data.getBooleanExtra("isLockScreen", true);
+            int[] clockTime = data.getIntArrayExtra("clockTime");
+            BirthBean bean = new BirthBean();
+            bean.setName(name);
+            BornDay born = BornDay.getSolarBornDay(nextBirth[0], nextBirth[1], nextBirth[2], age);
+            bean.setBirthday(born);
+            bean.setLockScreen(isLockScreen);
+            bean.setClockTime(clockTime);
+            insertBirthCard(bean);
+        } else if (requestCode == BirthDetailActivity.REQUEST && resultCode == BirthDetailActivity.RESULT) {
+            assert data != null;
+            Bundle bundle = data.getBundleExtra("allMessage");
+
+        }
+    }
+
+    private void insertBirthCard(BirthBean bean) {
+        // 移除第一张空卡片
+        birthBeans.remove(0);
+
+        // 当未添加生日记录时有一张无用卡片需删除
+        BirthBean birthBean = birthBeans.get(0);
+        if (birthBean.getName().equals("无记录")) {
+            birthBeans.remove(0);
+        }
+
+        // 新增生日卡片
+        birthBeans.add(bean);
+        initBirthCard(birthBeans);
     }
 }
 

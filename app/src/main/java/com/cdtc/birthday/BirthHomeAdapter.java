@@ -14,11 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cdtc.birthday.data.BirthBean;
 import com.cdtc.birthday.data.BornDay;
-import com.cdtc.birthday.utils.ToastUtil;
 import com.cdtc.birthday.view.BirthDetailActivity;
 
 import java.util.Calendar;
@@ -69,7 +67,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
     @Override
     public void onBindViewHolder(@NonNull BirthHomeViewHolder holder, int position) {
         BirthBean birthBean = birthBeanArrayList.get(position);
-        int imageStyle = birthBean.getImageStyle();
+        int imageStyle = (int) (Math.random() * fontColor.length);
 
         if (position == 0) {
             holder.setVisibility(false);
@@ -98,7 +96,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
      */
     @SuppressLint("SetTextI18n")
     private void initData(BirthHomeViewHolder holder, BirthBean birthBean) {
-        int imageStyle = birthBean.getImageStyle();
+        int imageStyle = (int) (Math.random() * fontColor.length);
         holder.birthCountDownText.setTextColor(fontColor[imageStyle]);
         holder.birthYearMonthText.setTextColor(fontColor[imageStyle]);
 
@@ -210,7 +208,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
                     bundle.putInt("age", bean.getAge());
                     bundle.putBoolean("isLunarBirth", bean.isLunarBirth());
                     bundle.putBoolean("isLockScreen", bean.isLockScreen());
-                    bundle.putIntArray("clockTime", bean.getTipTime());
+                    bundle.putIntArray("clockTime", bean.getClockTime());
 
                     intent.putExtra("allMessage", bundle);
                     context.startActivity(intent);

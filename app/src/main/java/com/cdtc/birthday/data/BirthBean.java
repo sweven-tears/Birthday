@@ -62,7 +62,7 @@ public class BirthBean {
     /**
      * 当天具体提醒时间，二维数组 {12,12} -> {小时,分钟}
      */
-    private int tipTime[];
+    private int clockTime[];
 
     /**
      * 生日主卡片样式编号
@@ -110,20 +110,19 @@ public class BirthBean {
      * @return age
      */
     public int getAge() {
-        Calendar cal = Calendar.getInstance();
-        int nowYear = cal.get(Calendar.YEAR);
-        int nowMonth = cal.get(Calendar.MONTH) + 1;
-        int nowDate = cal.get(Calendar.DATE);
+        int nextYear = getNextBirthYear();
+        int nextMonth = getNextBirthMonth();
+        int nextDate = getNextBirthDate();
 
         int birthYear = birthday.year;
         int birthMonth = birthday.month;
         int birthDate = birthday.date;
 
-        age = nowYear - birthYear;
+        age = nextYear - birthYear;
 
-        if (nowMonth <= birthMonth) {
-            if (nowMonth == birthMonth) {
-                if (nowDate < birthDate) {
+        if (nextMonth <= birthMonth) {
+            if (nextMonth == birthMonth) {
+                if (nextDate < birthDate) {
                     age--;
                 }
             } else {
@@ -148,7 +147,7 @@ public class BirthBean {
         int nextDate = getNextBirthDate();
 
         if (getName().equals("无记录")) {
-            tipText = "您还未添加\\n生日记录";
+            tipText = "您还未添加\n生日记录";
         } else {
             if (getAge() < 0) {
                 int remainTime = DealHomeBirthDate.getBetweenDays(nextYear, nextMonth, nextDate);
@@ -203,12 +202,12 @@ public class BirthBean {
         return imageStyle;
     }
 
-    public int[] getTipTime() {
-        return tipTime;
+    public int[] getClockTime() {
+        return clockTime;
     }
 
-    public void setTipTime(int[] tipTime) {
-        this.tipTime = tipTime;
+    public void setClockTime(int[] clockTime) {
+        this.clockTime = clockTime;
     }
 
     public void setImageStyle(int imageStyle) {

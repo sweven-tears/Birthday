@@ -16,10 +16,11 @@ public class DealHomeBirthDate {
      */
     public static int getBetweenDays(int birthYear, int birthMonth, int birthDate) {
 
-        Date today = new Date();
-        Date birth = new Date(birthYear - 1900, birthMonth - 1, birthDate);
 
         Calendar cal = Calendar.getInstance();
+
+        Date today = new Date(cal.get(Calendar.YEAR) - 1900, cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+        Date birth = new Date(birthYear - 1900, birthMonth - 1, birthDate);
 
         cal.setTime(today);
         long time1 = cal.getTimeInMillis();
@@ -27,7 +28,7 @@ public class DealHomeBirthDate {
         cal.setTime(birth);
         long time2 = cal.getTimeInMillis();
 
-        long between_days = (time2 - time1) / (1000 * 3600 * 24) + 2;
+        long between_days = (time2 - time1) / (1000 * 3600 * 24);
         return Integer.parseInt(String.valueOf(between_days));
     }
 

@@ -1,6 +1,7 @@
 package com.cdtc.birthday.view;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,11 +13,16 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.cdtc.birthday.AddBirthActivity;
+import com.cdtc.birthday.MainActivity;
 import com.cdtc.birthday.R;
+import com.cdtc.birthday.data.BornDay;
 import com.cdtc.birthday.utils.LogUtil;
 import com.cdtc.birthday.utils.ToastUtil;
 
@@ -28,7 +34,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
 
     private EditText birthDetailEditTextName;
     private TextView birthDetailTextViewBirthday;
-    private EditText birthDetailEditTextNextBirthday;
+    private TextView birthDetailTextViewNextBirthday;
     private EditText birthDetailEditTextAge;
     private TextView birthDetailTextViewClockTime;
     private Switch birthDetailSwitchIsLunarBirth;
@@ -38,7 +44,15 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
     private TextView actionBarEdit;
 
     private boolean editState;
+
+    private Bundle backData;
+    private String name;
+    private int[] birthday;
+    private int[] nextBirth;
+    private int age;
     private int[] clockTime;
+    private boolean isLunarBirth;
+    private boolean isLockScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +90,7 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
 
         birthDetailEditTextName = findViewById(R.id.birth_detail_edit_text_name);
         birthDetailTextViewBirthday = findViewById(R.id.birth_detail_text_view_birthday);
-        birthDetailEditTextNextBirthday = findViewById(R.id.birth_detail_edit_text_next_birth);
+        birthDetailTextViewNextBirthday = findViewById(R.id.birth_detail_text_view_next_birth);
         birthDetailEditTextAge = findViewById(R.id.birth_detail_edit_text_age);
         birthDetailTextViewClockTime = findViewById(R.id.birth_detail_text_view_clock_time);
         birthDetailSwitchIsLunarBirth = findViewById(R.id.birth_detail_switch_is_lunar_birth);
@@ -99,18 +113,22 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
             bundle = intent.getBundleExtra("allMessage");
         }
 
-        String name = bundle.getString("name");
-        int[] birthday = bundle.getIntArray("birthday");
-        int[] nextBirth = bundle.getIntArray("nextBirth");
-        int age = bundle.getInt("age");
-        boolean isLunarBirth = bundle.getBoolean("isLunarBirth");
+        name = bundle.getString("name");
+        birthday = bundle.getIntArray("birthday");
+        nextBirth = bundle.getIntArray("nextBirth");
+        age = bundle.getInt("age");
         clockTime = bundle.getIntArray("clockTime");
-        boolean isLockScreen = bundle.getBoolean("isLockScreen");
+        isLunarBirth = bundle.getBoolean("isLunarBirth");
+        isLockScreen = bundle.getBoolean("isLockScreen");
 
         birthDetailEditTextName.setText(name);
-        birthDetailTextViewBirthday.setText(birthday != null ? birthday[0] + "-" + birthday[1] + "-" + birthday[2] : "");
-        birthDetailEditTextNextBirthday.setText((nextBirth != null ? nextBirth[0] + "-" + nextBirth[1] + "-" + nextBirth[2] : ""));
+
+        birthDetailTextViewBirthday.setText(birthday != null ? birthday[0] + "年" + birthday[1] + "月" + birthday[2] + "日" : "");
+
+        birthDetailTextViewNextBirthday.setText(nextBirth != null ? nextBirth[0] + "年" + nextBirth[1] + "月" + nextBirth[2] + "日" : "");
+
         birthDetailEditTextAge.setText(age + "");
+
         birthDetailTextViewClockTime.setText(clockTime != null ? clockTime[0] + ":" + clockTime[1] : "未设置提醒时间");
 
         birthDetailSwitchIsLunarBirth.setChecked(isLunarBirth);
@@ -133,19 +151,68 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
                 actionBarEdit.setText("完成");
             } else if (actionBarEdit.getText().toString().equals("完成")) {
                 setEditState(false);
+                saveData();
                 actionBarEdit.setText("编辑");
             }
         });
 
-        birthDetailTextViewClockTime.setOnClickListener(view -> {
-            if (isEditState()) {
-                setWakeTime(clockTime);
-            }
-        });
+        birthDetailTextViewClockTime
+                .setOnClickListener(view -> setWakeTime(clockTime));
+
+        birthDetailTextViewNextBirthday
+                .setOnClickListener(view -> setNextBirth(nextBirth));
+
+        birthDetailSwitchIsLunarBirth
+                .setOnCheckedChangeListener((btn, b) -> isLunarBirth = b);
+
+        birthDetailSwitchIsLockScreen
+                .setOnCheckedChangeListener((btn, b) -> isLockScreen = b);
+    }
+
+    private void saveData() {
+        name = birthDetailEditTextName.getText().toString();
+        age = Integer.parseInt(birthDetailEditTextAge.getText().toString());
+        BornDay born;
+        if (isLunarBirth) {
+            born = BornDay.getLunarBornDay(nextBirth[0], nextBirth[1], nextBirth[2], age);
+        } else {
+            born = BornDay.getSolarBornDay(nextBirth[0], nextBirth[1], nextBirth[2], age);
+        }
+        birthday = new int[]{born.year, born.month, born.date};
+
+        backData=new Bundle();
+        backData.putString("name", name);
+        backData.putIntArray("birthday", birthday);
+        backData.putIntArray("nextBirth", nextBirth);
+        backData.putInt("age", age);
+        backData.putBoolean("isLunarBirth", isLunarBirth);
+        backData.putBoolean("isLockScreen", isLockScreen);
+        backData.putIntArray("clockTime", clockTime);
+    }
+
+    /**
+     * 设置下一次生日时间
+     *
+     * @param birth date
+     */
+    private void setNextBirth(int[] birth) {
+        int year = birth[0];
+        int month = birth[1];
+        int date = birth[2];
+        @SuppressLint("SetTextI18n")
+        DatePickerDialog dialog = new DatePickerDialog(BirthDetailActivity.this,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    int month1 = monthOfYear + 1;
+                    birthDetailTextViewNextBirthday.setText(year1 + "年" + month1 + "月" + dayOfMonth + "日");
+                    nextBirth = new int[]{year1, month1, dayOfMonth};
+                }, year, month, date);
+        dialog.show();
     }
 
     /**
      * 设置提醒时间
+     *
+     * @param clock time
      */
     private void setWakeTime(int[] clock) {
         int hour;
@@ -185,10 +252,11 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
      */
     public void setEditState(boolean editState) {
         birthDetailEditTextName.setEnabled(editState);
-        birthDetailEditTextNextBirthday.setEnabled(editState);
+        birthDetailTextViewNextBirthday.setEnabled(editState);
         birthDetailEditTextAge.setEnabled(editState);
         birthDetailSwitchIsLunarBirth.setEnabled(editState);
         birthDetailSwitchIsLockScreen.setEnabled(editState);
+        birthDetailTextViewClockTime.setEnabled(editState);
 
         this.editState = editState;
     }
@@ -216,6 +284,9 @@ public class BirthDetailActivity extends AppCompatActivity implements View.OnTou
             if (isEditState()) {
                 showTips();
             } else {
+                Intent intent=new Intent(BirthDetailActivity.this, MainActivity.class);
+                intent.putExtra("allMessage",backData);
+                setResult(RESULT,intent);
                 finish();
             }
         }

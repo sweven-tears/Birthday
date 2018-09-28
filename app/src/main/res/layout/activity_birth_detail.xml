@@ -102,7 +102,6 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/birth_detail_text_view_next_birth"
             android:layout_width="56dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="5dp"
@@ -119,8 +118,8 @@
             android:background="@drawable/redline"
             tools:ignore="ContentDescription" />
 
-        <EditText
-            android:id="@+id/birth_detail_edit_text_next_birth"
+        <TextView
+            android:id="@+id/birth_detail_text_view_next_birth"
             android:layout_width="280dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -128,7 +127,6 @@
             android:layout_marginStart="5dp"
             android:background="@null"
             android:gravity="center_vertical"
-            android:inputType="text"
             android:lines="1"
             android:paddingEnd="30dp"
             android:singleLine="true"
@@ -172,7 +170,8 @@
             android:layout_marginStart="5dp"
             android:background="@null"
             android:gravity="center_vertical"
-            android:inputType="text"
+            android:inputType="number"
+            android:maxLength="3"
             android:lines="1"
             android:paddingEnd="30dp"
             android:singleLine="true"
