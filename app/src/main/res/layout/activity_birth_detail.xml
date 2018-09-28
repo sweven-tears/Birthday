@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".view.BirthDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/birth_detail_text_view_name"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="昵称"
+            android:textColor="#C48550"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline"
+            tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/birth_detail_edit_text_name"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingEnd="30dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="出生"
+            android:textColor="#C48550"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/birth_detail_text_view_birthday"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:paddingEnd="30dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/birth_detail_text_view_next_birth"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="生日"
+            android:textColor="#C48550"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline"
+            tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/birth_detail_edit_text_next_birth"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingEnd="30dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/birth_detail_text_view_age"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="年龄"
+            android:textColor="#C48550"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline"
+            tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/birth_detail_edit_text_age"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingEnd="30dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="提醒时间"
+            android:textColor="#C48550"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/birth_detail_text_view_clock_time"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:paddingEnd="30dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/birth_detail_text_view_is_lunar_birth"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="农历生日"
+            android:textColor="#C48550"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline"
+            tools:ignore="ContentDescription" />
+
+        <Switch
+            android:id="@+id/birth_detail_switch_is_lunar_birth"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:paddingEnd="30dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/border_bottom"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/birth_detail_text_view_is_lock_screen"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="锁屏提醒"
+            android:textColor="#C48550"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/redline"
+            tools:ignore="ContentDescription" />
+
+        <Switch
+            android:id="@+id/birth_detail_switch_is_lock_screen"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:paddingEnd="30dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:ignore="HardcodedText,LabelFor,RtlSymmetry" />
+    </LinearLayout>
+</LinearLayout>

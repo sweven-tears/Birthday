@@ -2,8 +2,10 @@ package com.cdtc.birthday;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -15,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cdtc.birthday.data.BirthBean;
+import com.cdtc.birthday.data.BornDay;
+import com.cdtc.birthday.utils.ToastUtil;
+import com.cdtc.birthday.view.BirthDetailActivity;
 
 import java.util.Calendar;
 import java.util.List;
@@ -63,9 +68,8 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
 
     @Override
     public void onBindViewHolder(@NonNull BirthHomeViewHolder holder, int position) {
-        String name = birthBeanArrayList.get(position).getName();
-        String birthday = birthBeanArrayList.get(position).getBirthday();
-        int imageStyle = birthBeanArrayList.get(position).getImageStyle();
+        BirthBean birthBean = birthBeanArrayList.get(position);
+        int imageStyle = birthBean.getImageStyle();
 
         if (position == 0) {
             holder.setVisibility(false);
@@ -74,7 +78,7 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
                 holder.setVisibility(true);
             }
             initTextView(holder, imageStyle);
-            initData(holder, name, birthday, imageStyle);
+            initData(holder, birthBean);
             holder.HomePanelItemLayout.setBackgroundResource(backgroundImage[imageStyle]);
             holder.birthLayout.setBackgroundResource(foregroundImage[imageStyle]);
         }
@@ -89,36 +93,33 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
     /**
      * [初始化数据]
      *
-     * @param holder     .
-     * @param name       过生日人的名字
-     * @param birthday   出生年月日
-     * @param imageStyle 背景编号
+     * @param holder    .
+     * @param birthBean bean
      */
     @SuppressLint("SetTextI18n")
-    private void initData(BirthHomeViewHolder holder, String name, String birthday, int imageStyle) {
-
+    private void initData(BirthHomeViewHolder holder, BirthBean birthBean) {
+        int imageStyle = birthBean.getImageStyle();
         holder.birthCountDownText.setTextColor(fontColor[imageStyle]);
         holder.birthYearMonthText.setTextColor(fontColor[imageStyle]);
 
-        String showText = getShowCountDownText(name, birthday);
-        holder.birthCountDownText.setText(showText);
+        holder.birthCountDownText.setText(birthBean.getTipText());
 
-        int nextBirthday[] = getNextBirthday(name, birthday);
-        int nextYear = nextBirthday[0];
-        int nextMonth = nextBirthday[1];
-        int nextDate = nextBirthday[2];
+        int nextYear = birthBean.getNextBirthYear();
+        int nextMonth = birthBean.getNextBirthMonth();
+        int nextDate = birthBean.getNextBirthDate();
         holder.birthYearMonthText.setText(nextYear + "年" + nextMonth + "月");
         holder.birthDateText.setText(String.valueOf(nextDate));
 
         String week = DealHomeBirthDate.getWeekOfDate(nextYear, nextMonth, nextDate);
         holder.birthWeekText.setText(week);
+
         // Extra Information
         Calendar current = Calendar.getInstance();
         current.set(nextYear, nextMonth - 1, nextDate);
         CalendarUtil util = new CalendarUtil(current);
 
         String lunarYear = util.cyclical();
-        String animalSign = DealHomeBirthDate.animalsYear(nextYear);
+        String animalSign = util.animalsYear();
         holder.birthLunarYearText.setText(lunarYear + "年[" + animalSign + "年]");
 
         String lunarMonthDate = CalendarUtil.getCurrentDay(current);
@@ -126,74 +127,9 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
         holder.birthLunarMonthDateText.setText(lunarMonthDate);
 
 
-        String constellation = DealHomeBirthDate.constellation(birthday);
+        String constellation = DealHomeBirthDate.constellation(nextMonth, nextDate);
         holder.birthConstellationText.setText(constellation);
 
-    }
-
-    private int[] getNextBirthday(String name, String birthday) {
-        int birthYear = Integer.parseInt(birthday.split("-")[0]);
-        int birthMonth = Integer.parseInt(birthday.split("-")[1]);
-        int birthDate = Integer.parseInt(birthday.split("-")[2]);
-        Calendar now = Calendar.getInstance();
-
-        int nextYear = now.get(Calendar.YEAR);
-        int nextMonth;
-        int nextDate;
-        if (name.equals("无记录")) {
-            nextMonth = now.get(Calendar.MONTH) + 1;
-            nextDate = now.get(Calendar.DATE);
-        } else {
-            if (birthYear <= now.get(Calendar.YEAR)) {
-                if (birthMonth < now.get(Calendar.MONTH) + 1) {
-                    nextYear = nextYear + 1;
-                } else if (birthMonth == now.get(Calendar.MONTH) + 1) {
-                    if (birthDate < now.get(Calendar.DATE)) {
-                        nextYear = nextYear + 1;
-                    }
-                }
-            } else {
-                nextYear = birthYear;
-            }
-            nextMonth = birthMonth;
-            nextDate = birthDate;
-        }
-        return new int[]{nextYear, nextMonth, nextDate};
-    }
-
-    private String getShowCountDownText(String name, String birthday) {
-        int birthYear = Integer.parseInt(birthday.split("-")[0]);
-        int birthMonth = Integer.parseInt(birthday.split("-")[1]);
-        int birthDate = Integer.parseInt(birthday.split("-")[2]);
-
-        int age = DealHomeBirthDate.getAge(birthYear, birthMonth, birthDate);
-
-        Calendar now = Calendar.getInstance();
-        String showText;
-        if (name.equals("无记录")) {
-            showText = "您还未添加\n生日记录";
-        } else {
-            if (birthYear >= now.get(Calendar.YEAR)) {
-                int remainTime = DealHomeBirthDate.getBetweenDays(birthYear, birthMonth, birthDate);
-                showText = name + "\n离出生还有\n" + remainTime + "天\no(ﾟДﾟ)っ！";
-            } else {
-                birthYear = now.get(Calendar.YEAR);
-                if (birthMonth < now.get(Calendar.MONTH) + 1) {
-                    birthYear = birthYear + 1;
-                } else if (birthMonth == now.get(Calendar.MONTH) + 1) {
-                    if (birthDate < now.get(Calendar.DATE)) {
-                        birthYear = birthYear + 1;
-                    }
-                }
-                int remainTime = DealHomeBirthDate.getBetweenDays(birthYear, birthMonth, birthDate);
-                if (remainTime != 0) {
-                    showText = name + "\n" + age + "岁生日\n倒计时:\n" + remainTime + "天";
-                } else {
-                    showText = name + "\n" + age + "岁生日\n就是今天!";
-                }
-            }
-        }
-        return showText;
     }
 
     /**
@@ -262,8 +198,23 @@ public class BirthHomeAdapter extends RecyclerView.Adapter<BirthHomeAdapter.Birt
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.birth_layout) {
-                //TODO 打开信息详情页面
-                Toast.makeText(context, "打开详情页", Toast.LENGTH_SHORT).show();
+                BirthBean bean = birthBeanArrayList.get(getAdapterPosition());
+                if (!bean.getName().equals("无记录")) {
+                    BornDay day = bean.getBirthday();
+                    Intent intent = new Intent(context, BirthDetailActivity.class);
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("name", bean.getName());
+                    bundle.putIntArray("birthday", new int[]{day.year, day.month, day.date});
+                    bundle.putIntArray("nextBirth", new int[]{bean.getNextBirthYear(), bean.getNextBirthMonth(), bean.getNextBirthDate()});
+                    bundle.putInt("age", bean.getAge());
+                    bundle.putBoolean("isLunarBirth", bean.isLunarBirth());
+                    bundle.putBoolean("isLockScreen", bean.isLockScreen());
+                    bundle.putIntArray("clockTime", bean.getTipTime());
+
+                    intent.putExtra("allMessage", bundle);
+                    context.startActivity(intent);
+                }
             }
         }
 
