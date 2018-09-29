@@ -33,6 +33,7 @@
             android:layout_gravity="center_vertical"
             android:background="@null"
             android:hint="该怎么称呼ta呢"
+            android:maxLength="5"
             android:lines="1"
             android:singleLine="true"
             android:gravity="center_vertical"
@@ -104,12 +105,40 @@
             android:layout_gravity="center_vertical"
             android:background="@null"
             android:hint="点击设置年龄"
+            android:maxLength="3"
+            android:digits="0123456789"
             android:lines="1"
             android:singleLine="true"
             android:gravity="center_vertical"
             android:paddingRight="20dp"
             android:textSize="18sp"
             android:textStyle="normal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/farm_calendar_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/add_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:text="农历"
+            android:textColor="#C48550" />
+
+        <Switch
+            android:id="@+id/farm_calendar_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="275dp" />
 
     </LinearLayout>
 

@@ -11,39 +11,53 @@ import android.os.IBinder;
 import android.os.SystemClock;
 
 import com.cdtc.birthday.utils.LogUtil;
+import com.coolerfall.daemon.Daemon;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class LongRunningService extends Service {
-    private int month,day;
+    private int month,day,hour,minuete,seconds;
 
     public LongRunningService() {
     }
 
     @Override
     public void onCreate() {
-        LogUtil.d("ALARMSERVICE", "onCreate()");
         super.onCreate();
+        LogUtil.d("ALARMSERVICE", "onCreate()");
+        Daemon.run(LongRunningService.this,LongRunningService.class
+                ,Daemon.INTERVAL_ONE_MINUTE);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        setAlarm();
+        return START_STICKY;
+    }
 
-//        month=intent.getExtras().getInt("");
-//        day=intent.getExtras().getInt("");
-
+    /** 设置Alarm */
+    private void setAlarm(){
         LogUtil.d("ALARMSERVICE", "onStartCommand()");
-        startForeground(1, new Notification());
+        month=8;
+        day=28;
+        hour=23;
+        minuete=50;
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minuete);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+        long systemTime=System.currentTimeMillis();
+        long selectTime=calendar.getTimeInMillis();
+        long time=selectTime-systemTime;
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-//                Toast.makeText(LongRunningService.this, "常驻后台测试", Toast.LENGTH_SHORT).show();
-            }
-        }).start();
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int fiveSeconds = 5 * 1000;  //5秒的毫秒数
-        long triggerAtTime = SystemClock.elapsedRealtime() + fiveSeconds;
-        Intent i = new Intent(this, LongRunningService.class);
-        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+        long triggerAtTime = SystemClock.elapsedRealtime() + time;
+        Intent i = new Intent(this, GuardReceiver.class);
+        i.setAction("com.cdtc.birthday.LongRunningService.OVER_TIME");
+        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
         try{
             if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
@@ -53,7 +67,6 @@ public class LongRunningService extends Service {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return START_STICKY;
     }
 
     @Override
